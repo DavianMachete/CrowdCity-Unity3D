@@ -213,6 +213,7 @@ public class CrowdManager : MonoBehaviour
             //characters.Add(leader);
             Crowd newCrowd = new Crowd(leader);
             Crowds.Add(newCrowd);
+            leader.PrepareCrowdCounter();
         }
     }
 

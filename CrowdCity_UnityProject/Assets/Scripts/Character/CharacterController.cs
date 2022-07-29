@@ -15,6 +15,8 @@ public class CharacterController : MonoBehaviour
 
     [SerializeField] private List<Renderer> renderers;
 
+    private CrowdCounterController crowdCounter;
+
     [ContextMenu("Initialize Character")]
     public void InitializeCharacter(Clan clan, CharacterRoll roll, bool startMovement = false)
     {
@@ -23,13 +25,23 @@ public class CharacterController : MonoBehaviour
 
         movementController.Prepare(this);
         animationController.Prepare(this);
-        //collisionController.Prepare(this, 1f, 100);
+
+        if (crowdCounter != null)
+            crowdCounter.DestroyCounter();
+
 
         int characterClanLayer = LayerMask.NameToLayer(clan.ToString());
         gameObject.layer = characterClanLayer;
 
         if (startMovement)
             StartCharacter();
+    }
+
+    public void PrepareCrowdCounter()
+    {
+        if (Roll == CharacterRoll.Leader)
+            crowdCounter = GameManager.instance.gameView.AddCrowdCounter();
+        crowdCounter.Prepare(this);
     }
 
     public void SetMaterial(Material material)
@@ -55,6 +67,8 @@ public class CharacterController : MonoBehaviour
             }
             else
             {
+                if (crowdCounter != null)
+                    crowdCounter.DestroyCounter();
                 CrowdManager.instance.RemoveCrowd(Clan);
             }
         }
@@ -151,6 +165,8 @@ public class CharacterController : MonoBehaviour
     public void DestroyCharacter()
     {
         movementController.StopAllCoroutines();
+        if (crowdCounter != null)
+            crowdCounter.DestroyCounter();
         Destroy(gameObject);
     }
 }

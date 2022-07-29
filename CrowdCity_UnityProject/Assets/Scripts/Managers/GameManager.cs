@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
+    public Canvas canvas;
     public GameView gameView;
     public MenuView menuView;
 

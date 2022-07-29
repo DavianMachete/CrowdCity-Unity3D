@@ -178,9 +178,13 @@ public class CharacterMovementController : MonoBehaviour
             Utilities.FindNearestPointOnLine(wall.LTCorner, wall.RTCorner, startPos) + wall.transform.forward * distanceFromWall;
         float hmDur = Vector3.Distance(startPos, endPos) / speed;
 
+        Quaternion stratRot = transform.rotation;
+        Vector3 rotateTo = wall.isBottom ? wall.transform.forward * -1f : wall.transform.forward;
+
         while (t < hmDur)
         {
             transform.position = Vector3.Lerp(startPos, endPos, t / hmDur);
+            transform.rotation = Quaternion.Lerp(stratRot, Quaternion.LookRotation(rotateTo, Vector3.up), t);
 
             t += Time.deltaTime;
             yield return null;

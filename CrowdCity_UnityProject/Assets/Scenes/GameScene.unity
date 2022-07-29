@@ -1342,6 +1342,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blackPanelsContainer: {fileID: 1753474215}
+  crowdCounterPrefab: {fileID: 2964423771906743417, guid: e195ea417be3d4fdaaa863d4db2a997b,
+    type: 3}
   topHalf: {fileID: 1875925185}
   bottomHalf: {fileID: 367182625}
   reference: {fileID: 344158368}
@@ -1717,6 +1719,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee36e8523b3634111ba8b3bfe728c3ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvas: {fileID: 1847720364}
   gameView: {fileID: 485006040}
   menuView: {fileID: 1792719170}
   levelEndView: {fileID: 2119428484}
@@ -5418,7 +5421,7 @@ PrefabInstance:
     - target: {fileID: 830920697137094071, guid: 4f6487a221bea4dcd9f82537ab06c497,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 830920697137094071, guid: 4f6487a221bea4dcd9f82537ab06c497,
         type: 3}

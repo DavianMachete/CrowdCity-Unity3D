@@ -8,11 +8,14 @@ public class GameView : MonoBehaviour
     [SerializeField] GameObject blackPanelsContainer;
     //[SerializeField] GameObject floatingJoystick;
 
+    [SerializeField] private GameObject crowdCounterPrefab;
+
     [SerializeField] RectTransform topHalf;
     [SerializeField] RectTransform bottomHalf;
 
     [SerializeField] RectTransform reference;
     [SerializeField] bool areBlackPanelsActive;
+
 
 #if UNITY_EDITOR
     void Update()
@@ -31,4 +34,11 @@ public class GameView : MonoBehaviour
         bottomHalf.sizeDelta = new Vector2(bottomHalf.sizeDelta.x, size);
     }
 
+
+    public CrowdCounterController AddCrowdCounter()
+    {
+        CrowdCounterController crowdCounterController = Instantiate(crowdCounterPrefab, GameManager.instance.canvas.transform).GetComponent<CrowdCounterController>();
+        crowdCounterController.SetCanvas(GameManager.instance.canvas);
+        return crowdCounterController;
+    }
 }

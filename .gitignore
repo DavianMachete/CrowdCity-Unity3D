@@ -74,6 +74,8 @@ sysinfo.txt
 /CrowdCity_UnityProject/Library
 /CrowdCity_UnityProject/Builds
 /CrowdCity_UnityProject/obj
+/CrowdCity_UnityProject/Temp
+
 
 # Crashlytics generated file
 crashlytics-build.properties
