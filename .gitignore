@@ -2,6 +2,7 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore
 #
+
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
@@ -42,6 +43,7 @@ ExportedObj/
 *.mdb
 *.opendb
 *.VC.db
+*.DS_Store
 
 # Unity3D generated meta files
 *.pidb.meta
