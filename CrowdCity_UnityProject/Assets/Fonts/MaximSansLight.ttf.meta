@@ -1,0 +1,25 @@
+fileFormatVersion: 2
+guid: 6e5408033194445d296b22f90225e125
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Maxim Sans
+  fontNames:
+  - Maxim Sans
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 92f50c22b51154f6887cf9ff82fcdc42, type: 3}
+  - {fileID: 12800000, guid: 3e9b725466e3e4cd7ba9fa243579e33e, type: 3}
+  - {fileID: 12800000, guid: 51206f1d304a140449cb41b5fa4da9c3, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

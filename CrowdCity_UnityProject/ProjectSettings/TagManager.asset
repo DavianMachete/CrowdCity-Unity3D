@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - destroyOnInit
+  - Wall
+  - Character
+  - Enemy1
+  - Ground
+  - Building
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - None
+  - Player
+  - Opponent1
+  - Opponent2
+  - Opponent3
+  - Opponent4
+  - Opponent5
+  - Opponent6
+  - Opponent7
+  - Opponent8
+  - Opponent9
+  - Opponent10
+  - Opponent11
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
