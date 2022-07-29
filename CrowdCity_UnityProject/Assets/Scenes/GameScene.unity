@@ -4026,7 +4026,7 @@ MonoBehaviour:
   freeCharactersSpeed: 4
   followLeaderType: 0
   followerPositioning: 2
-  radius: 1
+  radius: 0.5
   isVelocityOfPlayerStatic: 1
   stopWhenJoystickDisable: 0
   positionVectors: []
