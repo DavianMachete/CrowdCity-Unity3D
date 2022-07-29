@@ -234,7 +234,7 @@ public class CrowdManager : MonoBehaviour
             //characters.Add(freeCharacter);
         }
 
-        Debug.Log($"CharactersCount = {CharactersCount}");
+        //Debug.Log($"CharactersCount = {CharactersCount}");
         //Debug.Log($"characters.Count = {characters.Count}");
     }
 

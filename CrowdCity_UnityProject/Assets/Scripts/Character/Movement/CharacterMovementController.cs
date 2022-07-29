@@ -184,7 +184,7 @@ public class CharacterMovementController : MonoBehaviour
         while (t < hmDur)
         {
             transform.position = Vector3.Lerp(startPos, endPos, t / hmDur);
-            transform.rotation = Quaternion.Lerp(stratRot, Quaternion.LookRotation(rotateTo, Vector3.up), t);
+            transform.rotation = Quaternion.Lerp(stratRot, Quaternion.LookRotation(rotateTo, Vector3.up), t/ hmDur);
 
             t += Time.deltaTime;
             yield return null;
