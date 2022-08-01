@@ -98,17 +98,6 @@ public class CharacterMovementController : MonoBehaviour
     public float GetSpeedT()
     {
         return Mathf.InverseLerp(0f, CharacterManager.instance.GreatestSpeed, Velocity.magnitude);
-        //if (movementType == MovementType.AI)
-        //{
-        //    if (CharacterManager.instance.followLeaderType == FollowLeaderType.ByAgentDestination)
-        //        return Mathf.InverseLerp(0f, CharacterManager.instance.GreatestSpeed, navMeshAgent.velocity.magnitude);
-        //    else
-        //        return Mathf.InverseLerp(0f, CharacterManager.instance.GreatestSpeed, navMeshAgent.velocity.magnitude);
-        //}
-        //else
-        //{
-        //    return JoysticManager.instance.Velocity.magnitude;
-        //}
     }
 
     #region Perivate Methods
@@ -147,6 +136,8 @@ public class CharacterMovementController : MonoBehaviour
 
     private void MoveOnWall(Wall wall)
     {
+        if (movementType != MovementType.Joystick)
+            return;
         if (IMoveOnWallHelper == null)
             IMoveOnWallHelper = StartCoroutine(IMoveOnWall(wall));
     }
