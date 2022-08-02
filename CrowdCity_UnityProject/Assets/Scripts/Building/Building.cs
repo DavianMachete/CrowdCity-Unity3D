@@ -11,9 +11,9 @@ public class Building : MonoBehaviour
     public float ScaleZ { get { return buildingTransform.localScale.z; } }
 
 
-    public void OnCharacterInteractedWithWall(Wall wall,Collider collider)
+    public void OnCharacterInteractedWithWall(WallSide wallSide,Collider collider)
     {
         CharacterMovementController characterMC = collider.GetComponent<CharacterMovementController>();
-        characterMC.OnInteractWithWall(wall);
+        characterMC.OnInteractWithWall(wallSide);
     }
 }

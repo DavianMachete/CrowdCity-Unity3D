@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -7,6 +8,7 @@ public class CharacterMovementController : MonoBehaviour
 {
     public MovementType movementType;
     public Vector3 Velocity = Vector3.zero;
+    public Wall currentWall { get; private set; }
 
 
     private NavMeshAgent navMeshAgent;
@@ -18,8 +20,7 @@ public class CharacterMovementController : MonoBehaviour
     private FollowLeaderWalking followLeaderWolking = null;
 
 
-    [SerializeField] private float onWallSpeedMultiplier = 1f;
-    [SerializeField] private float distanceFromWall = 0.5f;
+    [SerializeField] private float wallOffset = 0.5f;
 
 
     public void Prepare(CharacterController character)
@@ -67,32 +68,10 @@ public class CharacterMovementController : MonoBehaviour
         IUpdateMovementHelper = null;
     }
 
-    public void OnInteractWithWall(Collider wallCollider)
+    public void OnInteractWithWall(WallSide wallSide)
     {
-        if (onWall)
-            return;
 
-        Wall wall = wallCollider.GetComponent<Wall>();
-        //Debug.Log($"interacted with wall {wall.gameObject.name}");
-
-        MoveOnWall(wall);
-    }
-
-    public void OnInteractWithWall(Collision wallCollision)
-    {
-        if (onWall )
-            return;
-        Wall wall = wallCollision.gameObject.GetComponent<Wall>();
-
-        MoveOnWall(wall);
-    }
-
-    public void OnInteractWithWall(Wall wall)
-    {
-        if (onWall)
-            return;
-
-        MoveOnWall(wall);
+        MoveOnWall(wallSide);
     }
 
     public float GetSpeedT()
@@ -134,89 +113,99 @@ public class CharacterMovementController : MonoBehaviour
 
     }
 
-    private void MoveOnWall(Wall wall)
+    private void MoveOnWall(WallSide wallSide)
     {
-        if (movementType != MovementType.Joystick)
-            return;
-        if (IMoveOnWallHelper == null)
-            IMoveOnWallHelper = StartCoroutine(IMoveOnWall(wall));
+        if (IMoveToWallHelper == null)
+            IMoveToWallHelper = StartCoroutine(IMoveToWall(wallSide));
     }
 
     #endregion
 
     #region Coroutines
 
-    private bool onWall = false;
-    private Coroutine IMoveOnWallHelper;
-    private IEnumerator IMoveOnWall(Wall wall)
+    private bool isMoveToWall = false;
+    private Coroutine IMoveToWallHelper;
+    private IEnumerator IMoveToWall(WallSide wallSide)
     {
-        onWall = true;
+        //Turn Off other movement and iteraction controllers
+
+        isMoveToWall = true;
         characterCollider.enabled = false;
         navMeshAgent.ResetPath();
         navMeshAgent.enabled = false;
 
-        float speed = navMeshAgent.speed * onWallSpeedMultiplier;
+        //
 
-        
-        float vmDur = wall.Building.Height/ speed;
-        float height = wall.isBottom ? wall.Building.Height : wall.Building.Height * -1f;
+
+        Vector3 startPos = transform.position;
+
+        Vector3 wallSidePoint = Utilities.FindNearestPointOnLine(wallSide.LCorner, wallSide.RCorner, startPos);
+
+        Vector3 targetPos = Vector3.zero;
+
+        if (wallSide.nextWallSide == null)
+        {
+            if (currentWall != null)//so target pos must be on ground
+            {
+                targetPos = wallSide.wall.Normal * wallOffset + wallSidePoint;
+                currentWall = null;
+            }
+            else//so target pos must be on wall
+            {
+                targetPos = wallSide.wall.transform.forward * wallOffset + wallSidePoint;
+                currentWall = wallSide.wall;
+            }
+        }
+        else
+        {
+            targetPos = wallSide.wall.Normal * -1f + wallSidePoint;
+            currentWall = wallSide.nextWallSide.wall;
+        }
+
+        float lenght = Vector3.Distance(startPos, wallSidePoint) + Vector3.Distance(wallSidePoint, targetPos);
+        float dur = lenght / navMeshAgent.speed;
 
         float t = 0f;
-        Vector3 startPos = transform.position;
-        //Vector3 endPos = startPos + dir;
-        Vector3 endPos = wall.isBottom ?
-            Utilities.FindNearestPointOnLine(wall.LBCorner, wall.RBCorner, startPos) + wall.transform.forward * distanceFromWall :
-            Utilities.FindNearestPointOnLine(wall.LTCorner, wall.RTCorner, startPos) + wall.transform.forward * distanceFromWall;
-        float hmDur = Vector3.Distance(startPos, endPos) / speed;
 
-        Quaternion stratRot = transform.rotation;
-        Vector3 rotateTo = wall.isBottom ? wall.transform.forward * -1f : wall.transform.forward;
 
-        while (t < hmDur)
+        Quaternion startRot = transform.rotation;
+        Quaternion targetRot = Quaternion.LookRotation((wallSidePoint - startPos).normalized, transform.up);
+
+        //first side
+        while (t * 2f <= dur)
         {
-            transform.position = Vector3.Lerp(startPos, endPos, t / hmDur);
-            transform.rotation = Quaternion.Lerp(stratRot, Quaternion.LookRotation(rotateTo, Vector3.up), t/ hmDur);
+            //Move
+            transform.position = Vector3.Lerp(startPos, wallSidePoint, t * 2f / dur);
+
+            //Rotate
+            transform.rotation = Quaternion.Lerp(startRot, targetRot, t * 2f / dur);
 
             t += Time.deltaTime;
             yield return null;
         }
-        transform.position = endPos;
 
+        //second side
         t = 0f;
-        startPos = transform.position;
-        endPos = startPos + (height * Vector3.up);
-
-        while (t < vmDur)
+        startRot = transform.rotation;
+        targetRot = Quaternion.LookRotation((targetPos - wallSidePoint).normalized,
+            currentWall != null ? currentWall.Normal : Vector3.up);
+        while (t * 2f <= dur)
         {
-            transform.position = Vector3.Lerp(startPos, endPos, t / vmDur);
+            //Move
+            transform.position = Vector3.Lerp(wallSidePoint, targetPos, t * 2f / dur);
+
+            //Rotate
+            transform.rotation = Quaternion.Lerp(startRot, targetRot, t * 2f / dur);
 
             t += Time.deltaTime;
             yield return null;
         }
-        transform.position = endPos;
-
-        t = 0f;
-        startPos = transform.position;
-        endPos = wall.isBottom ?
-            Utilities.FindNearestPointOnLine(wall.LTCorner, wall.RTCorner, startPos) - (2f * distanceFromWall * wall.transform.forward) :
-            Utilities.FindNearestPointOnLine(wall.LBCorner, wall.RBCorner, startPos) + (2f * distanceFromWall * wall.transform.forward);
-        hmDur = Vector3.Distance(startPos, endPos) / speed;
-
-        while (t < hmDur)
-        {
-            transform.position = Vector3.Lerp(startPos, endPos, t / hmDur);
-
-            t += Time.deltaTime;
-            yield return null;
-        }
-        transform.position = endPos;
-
-        onWall = false;
-        navMeshAgent.enabled = true;
 
         characterCollider.enabled = true;
+        navMeshAgent.enabled = true;
 
-        IMoveOnWallHelper = null;
+        isMoveToWall = false;
+        IMoveToWallHelper = null;
     }
 
     private bool update = false;
@@ -230,15 +219,15 @@ public class CharacterMovementController : MonoBehaviour
                 if (movementType == MovementType.Joystick)
                 {
                     if (joystickWalk == null)
-                        joystickWalk = new JoystickWalking(navMeshAgent, transform);
-                    if (!onWall)
+                        joystickWalk = new JoystickWalking(this);
+                    if (!isMoveToWall)
                         Velocity=joystickWalk.UpdateJoystickWalk();
                 }
                 else
                 {
                     if (randomWalk == null)
                         randomWalk = new RandomWalking(navMeshAgent);
-                    if (!onWall)
+                    if (!isMoveToWall)
                         Velocity = randomWalk.UpdateRandomWalk();
                 }
             }
@@ -249,18 +238,18 @@ public class CharacterMovementController : MonoBehaviour
 
                 if (character.leader == null)
                     character.leader = CrowdManager.instance.GetLeader(character.Clan);
-                if (!onWall)
+                if (!isMoveToWall)
                     Velocity = followLeaderWolking.UpdateFollowLeaderWalking(character.leader,CharacterManager.instance.followLeaderType);
             }
             else if(character.Clan == Clan.None)
             {
                 if (randomWalk == null)
                     randomWalk = new RandomWalking(navMeshAgent);
-                if (!onWall)
+                if (!isMoveToWall)
                     Velocity = randomWalk.UpdateRandomWalk();
             }
 
-            character.animationController.SetCharacterSpeed(onWall ? 0f : GetSpeedT());
+            character.animationController.SetCharacterSpeed(isMoveToWall ? 1f : GetSpeedT());
 
             yield return null;
         }

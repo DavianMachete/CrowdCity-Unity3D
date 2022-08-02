@@ -43,8 +43,16 @@ public enum FollowerPositioning
 
 public enum Sides
 {
+    X,
+    Y,
+    Z
+}
+
+public enum WallSides
+{
     Front,
     Right,
     Back,
-    Left
+    Left,
+    Top
 }

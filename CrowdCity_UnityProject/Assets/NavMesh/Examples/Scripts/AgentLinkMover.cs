@@ -8,7 +8,8 @@ public enum OffMeshLinkMoveMethod
     NormalSpeed,
     Parabola,
     Curve,
-    NormalSpeedByCurve
+    NormalSpeedByCurve,
+    NormalSpeedWithRotation
 }
 
 [RequireComponent(typeof(NavMeshAgent))]
@@ -34,6 +35,8 @@ public class AgentLinkMover : MonoBehaviour
                     yield return StartCoroutine(Curve(agent, 0.5f));
                 else if (m_Method == OffMeshLinkMoveMethod.NormalSpeedByCurve)
                     yield return StartCoroutine(NormalSpeedByCurve(agent));
+                else if (m_Method == OffMeshLinkMoveMethod.NormalSpeedWithRotation)
+                    yield return StartCoroutine(NormalSpeedWithRotation(agent));
                 agent.CompleteOffMeshLink();
             }
             yield return null;
@@ -46,7 +49,7 @@ public class AgentLinkMover : MonoBehaviour
         Vector3 endPos = data.endPos + Vector3.up * agent.baseOffset;
         while (agent.transform.position != endPos)
         {
-            agent.transform.position = Vector3.MoveTowards(agent.transform.position, endPos, agent.speed * Time.deltaTime);
+            agent.transform.position = Vector3.MoveTowards(agent.transform.position, endPos, agent.speed * Time.deltaTime * speedMultiplier);
             yield return null;
         }
     }
@@ -79,6 +82,38 @@ public class AgentLinkMover : MonoBehaviour
             normalizedTime += Time.deltaTime / duration;
             yield return null;
         }
+    }
+
+    IEnumerator NormalSpeedWithRotation(NavMeshAgent agent)
+    {
+        OffMeshLinkData data = agent.currentOffMeshLinkData;
+        Vector3 startPos = agent.transform.position;
+        Vector3 endPos = data.endPos + Vector3.up * agent.baseOffset;
+        agent.updateRotation = false;
+        Quaternion startRot = transform.rotation;
+        //Vector3 startUpword = agent.transform.up;
+        //Vector3 upwordOfLink = GetLocalUpword(startPos, endPos);
+        //float multiplier = 1f;
+        //if (Vector3.Dot(startUpword, upwordOfLink) < 0)
+        //{
+        //    multiplier = -1f;
+        //}
+        //Vector3 eulerAngles = agent.transform.localEulerAngles;
+        //Vector3 targetEulers = eulerAngles + (90f * multiplier * Vector3.right);
+        float t = 0f;
+        float dur = Vector3.Distance(startPos, endPos) / (agent.speed * speedMultiplier);
+        Vector3 targetForward = endPos - (startPos + agent.transform.forward * 0.3f);
+        while (dur > 0f && t <= dur)
+        {
+            agent.transform.position = Vector3.Lerp(startPos, endPos, t / dur);
+            transform.LookAt(targetForward + endPos);// = Quaternion.Lerp(startRot, Quaternion.LookRotation(targetForward.normalized), t / dur);
+
+            //agent.transform.localEulerAngles = Vector3.Lerp(eulerAngles, targetEulers, t / dur);
+
+            t += Time.deltaTime;
+            yield return null;
+        }
+        agent.updateRotation = true;
     }
 
     IEnumerator NormalSpeedByCurve(NavMeshAgent agent)
