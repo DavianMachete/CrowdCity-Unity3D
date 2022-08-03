@@ -115,6 +115,9 @@ public class CharacterMovementController : MonoBehaviour
 
     private void MoveOnWall(WallSide wallSide)
     {
+        if (Vector3.Dot(transform.forward, wallSide.transform.forward) <= 0)
+            return;
+
         if (IMoveToWallHelper == null)
             IMoveToWallHelper = StartCoroutine(IMoveToWall(wallSide));
     }
@@ -131,7 +134,7 @@ public class CharacterMovementController : MonoBehaviour
 
         isMoveToWall = true;
         characterCollider.enabled = false;
-        navMeshAgent.ResetPath();
+        //navMeshAgent.ResetPath();
         navMeshAgent.enabled = false;
 
         //
@@ -141,70 +144,56 @@ public class CharacterMovementController : MonoBehaviour
 
         Vector3 wallSidePoint = Utilities.FindNearestPointOnLine(wallSide.LCorner, wallSide.RCorner, startPos);
 
-        Vector3 targetPos = Vector3.zero;
+        Vector3 targetPos = (-1f * wallOffset * wallSide.nextWallSide.transform.forward) + wallSidePoint;
 
-        if (wallSide.nextWallSide == null)
-        {
-            if (currentWall != null)//so target pos must be on ground
-            {
-                targetPos = wallSide.wall.Normal * wallOffset + wallSidePoint;
-                currentWall = null;
-            }
-            else//so target pos must be on wall
-            {
-                targetPos = wallSide.wall.transform.forward * wallOffset + wallSidePoint;
-                currentWall = wallSide.wall;
-            }
-        }
-        else
-        {
-            targetPos = wallSide.wall.Normal * -1f + wallSidePoint;
-            currentWall = wallSide.nextWallSide.wall;
-        }
 
-        float lenght = Vector3.Distance(startPos, wallSidePoint) + Vector3.Distance(wallSidePoint, targetPos);
+        float lenght = Vector3.Distance(startPos, wallSidePoint);
         float dur = lenght / navMeshAgent.speed;
 
         float t = 0f;
 
 
-        Quaternion startRot = transform.rotation;
-        Quaternion targetRot = Quaternion.LookRotation((wallSidePoint - startPos).normalized, transform.up);
-
         //first side
-        while (t * 2f <= dur)
+        Quaternion startRot = transform.rotation;
+        Quaternion targetRot = Quaternion.LookRotation(wallSide.nextWallSide.transform.forward * -1f, wallSide.nextWallSide.wall.Normal);
+
+        while (t <= dur)
         {
             //Move
-            transform.position = Vector3.Lerp(startPos, wallSidePoint, t * 2f / dur);
+            transform.position = Vector3.Lerp(startPos, wallSidePoint, t / dur);
 
             //Rotate
-            transform.rotation = Quaternion.Lerp(startRot, targetRot, t * 2f / dur);
+            transform.rotation = Quaternion.Slerp(startRot, targetRot, (t / dur) / 2f);
 
             t += Time.deltaTime;
             yield return null;
         }
 
         //second side
+        lenght = Vector3.Distance(wallSidePoint, targetPos);
+        dur = lenght / navMeshAgent.speed;
+
         t = 0f;
-        startRot = transform.rotation;
-        targetRot = Quaternion.LookRotation((targetPos - wallSidePoint).normalized,
-            currentWall != null ? currentWall.Normal : Vector3.up);
-        while (t * 2f <= dur)
+        while (t  <= dur)
         {
             //Move
-            transform.position = Vector3.Lerp(wallSidePoint, targetPos, t * 2f / dur);
+            transform.position = Vector3.Lerp(wallSidePoint, targetPos, t / dur);
 
             //Rotate
-            transform.rotation = Quaternion.Lerp(startRot, targetRot, t * 2f / dur);
+            transform.rotation = Quaternion.Slerp(startRot, targetRot, 0.5f + (t / dur) / 2f);
 
             t += Time.deltaTime;
             yield return null;
         }
+        transform.rotation = targetRot;
+
+        currentWall = wallSide.nextWallSide.wall;
 
         characterCollider.enabled = true;
         navMeshAgent.enabled = true;
 
         isMoveToWall = false;
+
         IMoveToWallHelper = null;
     }
 

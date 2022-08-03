@@ -18,6 +18,7 @@ public class JoystickWalking
         this.movementController = movementController;
         m_Agent = movementController.GetNavMeshAgent();
         transform = movementController.transform;
+        prevTargetDirection = transform.forward;
     }
 
     public Vector3 UpdateJoystickWalk()
@@ -35,24 +36,17 @@ public class JoystickWalking
         {
             targetDirection *= t;
         }
-
-        targetDirection = GetDirectionByWall();
-        m_Agent.Move(m_Agent.speed * Time.deltaTime * targetDirection);
+        Vector3 currentDir = GetDirectionByWall();
+        m_Agent.Move(m_Agent.speed * Time.deltaTime * currentDir);
 
         if (targetDirection!= Vector3.zero)
         { 
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(targetDirection.normalized, Vector3.up), Time.deltaTime * 8f);
-
-            //Utilities.GetPointByRayCast(m_Agent.transform.position + m_Agent.transform.forward * 4f);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(currentDir.normalized, Vector3.up), Time.deltaTime * 8f);
         }
 
-        if (prevTargetDirection == Vector3.zero)
-            prevTargetDirection = transform.forward;
-
         if (targetDirection != Vector3.zero)
-            prevTargetDirection = targetDirection.normalized;
-
-        return m_Agent.speed * targetDirection;
+            prevTargetDirection = targetDirection;
+        return m_Agent.speed * currentDir.normalized;
     }
 
     Vector3 newDir = Vector3.zero;
@@ -61,37 +55,46 @@ public class JoystickWalking
         if (movementController.currentWall == null)
             return targetDirection;
 
-        newDir = Vector3.zero;
-        switch (movementController.currentWall.wallSide)
+        //newDir = Vector3.zero;
+        switch (movementController.currentWall.BuildingSide)
         {
-            case WallSides.Front:
+            case BuildingSide.Front:
                 {
+                    newDir.z = 0f;
                     newDir.x = targetDirection.x;
                     newDir.y = targetDirection.z;
                 }
                 return newDir;
-            case WallSides.Right:
+            case BuildingSide.Right:
                 {
+                    newDir.x = 0f;
                     newDir.z = targetDirection.z;
                     newDir.y = targetDirection.x * -1f;
                 }
                 return newDir;
-            case WallSides.Back:
+            case BuildingSide.Back:
                 {
+                    newDir.z = 0f;
                     newDir.x = targetDirection.x;
                     newDir.y = targetDirection.z * -1f;
                 }
                 return newDir;
-            case WallSides.Left:
+            case BuildingSide.Left:
                 {
+                    newDir.x = 0f;
                     newDir.z = targetDirection.z;
                     newDir.y = targetDirection.x;
                 }
                 return newDir;
-            case WallSides.Top:
-                return targetDirection;
+            case BuildingSide.Top:
+            case BuildingSide.Ground:
             default:
-                return targetDirection;
+                {
+                    newDir.y = 0f;
+                    newDir.z = targetDirection.z;
+                    newDir.x = targetDirection.x;
+                }
+                return newDir;
         }
     }
 }

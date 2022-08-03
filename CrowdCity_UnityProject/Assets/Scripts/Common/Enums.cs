@@ -48,11 +48,12 @@ public enum Sides
     Z
 }
 
-public enum WallSides
+public enum BuildingSide
 {
     Front,
     Right,
     Back,
     Left,
-    Top
+    Top,
+    Ground
 }
