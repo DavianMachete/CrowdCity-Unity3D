@@ -10,7 +10,6 @@ public class JoystickWalking
     private NavMeshAgent m_Agent;
     private Vector3 targetDirection = Vector3.zero;
     private Vector3 prevTargetDirection = Vector3.zero;
-    private float t = 0f;
     private Transform transform;
 
     public JoystickWalking(CharacterMovementController movementController)
@@ -25,38 +24,38 @@ public class JoystickWalking
     {
         targetDirection.x = JoysticManager.instance.Horizontal;
         targetDirection.z = JoysticManager.instance.Vertical;
+        targetDirection.y = 0f;
 
-        t = targetDirection.magnitude;
-        targetDirection = targetDirection.normalized;
-        if (t == 0f && !CharacterManager.instance.stopWhenJoystickDisable)
-            targetDirection = prevTargetDirection;
-
-        if (!CharacterManager.instance.isVelocityOfPlayerStatic&&
-            CharacterManager.instance.stopWhenJoystickDisable)
+        if (targetDirection.magnitude < 0.01f)
         {
-            targetDirection *= t;
+            targetDirection = prevTargetDirection;
         }
-        Vector3 currentDir = GetDirectionByWall();
+        else
+        {
+            prevTargetDirection = targetDirection;
+        }
+
+        Vector3 currentDir = GetDirectionByWall().normalized;
+
         m_Agent.Move(m_Agent.speed * Time.deltaTime * currentDir);
 
         if (targetDirection!= Vector3.zero)
         { 
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(currentDir.normalized, Vector3.up), Time.deltaTime * 8f);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(currentDir.normalized,
+                movementController.CurrentWall==null? Vector3.up: movementController.CurrentWall.Normal),
+                Time.deltaTime * 8f);
         }
 
-        if (targetDirection != Vector3.zero)
-            prevTargetDirection = targetDirection;
         return m_Agent.speed * currentDir.normalized;
     }
 
     Vector3 newDir = Vector3.zero;
     private Vector3 GetDirectionByWall()
     {
-        if (movementController.currentWall == null)
+        if (movementController.CurrentWall == null)
             return targetDirection;
 
-        //newDir = Vector3.zero;
-        switch (movementController.currentWall.BuildingSide)
+        switch (movementController.CurrentWall.BuildingSide)
         {
             case BuildingSide.Front:
                 {

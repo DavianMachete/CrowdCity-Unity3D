@@ -8,11 +8,11 @@ public class CharacterMovementController : MonoBehaviour
 {
     public MovementType movementType;
     public Vector3 Velocity = Vector3.zero;
-    public Wall currentWall { get; private set; }
+    public Wall CurrentWall { get; private set; }
+    public CharacterController Character { get; private set; }
 
 
     private NavMeshAgent navMeshAgent;
-    private CharacterController character;
     private Collider characterCollider;
 
     private JoystickWalking joystickWalk = null;
@@ -34,7 +34,7 @@ public class CharacterMovementController : MonoBehaviour
         //navMeshAgent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
         //navMeshAgent.ResetPath();
 
-        this.character = character;
+        this.Character = character;
 
         SetSpeed();
         SetPriority();
@@ -44,6 +44,7 @@ public class CharacterMovementController : MonoBehaviour
             if (character.Clan == Clan.Player)
             {
                 movementType = MovementType.Joystick;
+                navMeshAgent.updateRotation = false;
             }
         }
     }
@@ -83,22 +84,22 @@ public class CharacterMovementController : MonoBehaviour
 
     private void SetSpeed()
     {
-        if(character.Clan==Clan.Player)
+        if(Character.Clan==Clan.Player)
         {
-            navMeshAgent.speed = character.Roll == CharacterRoll.Leader ?
+            navMeshAgent.speed = Character.Roll == CharacterRoll.Leader ?
                 CharacterManager.instance.playerSpeed : CharacterManager.instance.followersSpeed;
             return;
         }
 
-        if (character.Clan == Clan.None)
+        if (Character.Clan == Clan.None)
         {
             navMeshAgent.speed = CharacterManager.instance.freeCharactersSpeed;
             return;
         }
 
-        if (character.Clan != Clan.Player)
+        if (Character.Clan != Clan.Player)
         {
-            navMeshAgent.speed = character.Roll == CharacterRoll.Leader?
+            navMeshAgent.speed = Character.Roll == CharacterRoll.Leader?
                 CharacterManager.instance.oponentsSpeed: CharacterManager.instance.followersSpeed;
             return;
         }
@@ -106,7 +107,7 @@ public class CharacterMovementController : MonoBehaviour
 
     private void SetPriority()
     {
-        if (character.Roll == CharacterRoll.Leader)
+        if (Character.Roll == CharacterRoll.Leader)
             navMeshAgent.avoidancePriority = 0;
         else
             navMeshAgent.avoidancePriority = 2;
@@ -187,7 +188,7 @@ public class CharacterMovementController : MonoBehaviour
         }
         transform.rotation = targetRot;
 
-        currentWall = wallSide.nextWallSide.wall;
+        CurrentWall = wallSide.nextWallSide.wall;
 
         characterCollider.enabled = true;
         navMeshAgent.enabled = true;
@@ -203,7 +204,7 @@ public class CharacterMovementController : MonoBehaviour
     {
         while (update)
         {
-            if (character.Roll == CharacterRoll.Leader && character.Clan!= Clan.None)
+            if (Character.Roll == CharacterRoll.Leader && Character.Clan!= Clan.None)
             {
                 if (movementType == MovementType.Joystick)
                 {
@@ -220,17 +221,17 @@ public class CharacterMovementController : MonoBehaviour
                         Velocity = randomWalk.UpdateRandomWalk();
                 }
             }
-            else if(character.Roll == CharacterRoll.Follower && character.Clan != Clan.None)
+            else if(Character.Roll == CharacterRoll.Follower && Character.Clan != Clan.None)
             {
                 if (followLeaderWolking == null)
-                    followLeaderWolking = new FollowLeaderWalking(character);
+                    followLeaderWolking = new FollowLeaderWalking(Character);
 
-                if (character.leader == null)
-                    character.leader = CrowdManager.instance.GetLeader(character.Clan);
+                if (Character.leader == null)
+                    Character.leader = CrowdManager.instance.GetLeader(Character.Clan);
                 if (!isMoveToWall)
-                    Velocity = followLeaderWolking.UpdateFollowLeaderWalking(character.leader,CharacterManager.instance.followLeaderType);
+                    Velocity = followLeaderWolking.UpdateFollowLeaderWalking(Character.leader,CharacterManager.instance.followLeaderType);
             }
-            else if(character.Clan == Clan.None)
+            else if(Character.Clan == Clan.None)
             {
                 if (randomWalk == null)
                     randomWalk = new RandomWalking(navMeshAgent);
@@ -238,7 +239,7 @@ public class CharacterMovementController : MonoBehaviour
                     Velocity = randomWalk.UpdateRandomWalk();
             }
 
-            character.animationController.SetCharacterSpeed(isMoveToWall ? 1f : GetSpeedT());
+            Character.animationController.SetCharacterSpeed(isMoveToWall ? 1f : GetSpeedT());
 
             yield return null;
         }
