@@ -92,6 +92,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  onTagTriggerStays: []
   onTagTriggerExits: []
   onTagCollisionEnters: []
   onTagCollisionExits: []
@@ -251,6 +252,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  onTagTriggerStays: []
   onTagTriggerExits: []
   onTagCollisionEnters: []
   onTagCollisionExits: []
@@ -361,6 +363,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  onTagTriggerStays: []
   onTagTriggerExits: []
   onTagCollisionEnters: []
   onTagCollisionExits: []
@@ -471,6 +474,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  onTagTriggerStays: []
   onTagTriggerExits: []
   onTagCollisionEnters: []
   onTagCollisionExits: []
@@ -581,6 +585,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  onTagTriggerStays: []
   onTagTriggerExits: []
   onTagCollisionEnters: []
   onTagCollisionExits: []
@@ -691,6 +696,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  onTagTriggerStays: []
   onTagTriggerExits: []
   onTagCollisionEnters: []
   onTagCollisionExits: []
@@ -801,6 +807,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  onTagTriggerStays: []
   onTagTriggerExits: []
   onTagCollisionEnters: []
   onTagCollisionExits: []
@@ -911,6 +918,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  onTagTriggerStays: []
   onTagTriggerExits: []
   onTagCollisionEnters: []
   onTagCollisionExits: []
@@ -1119,6 +1127,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 991224627313659139}
+          m_MethodName: OnObjectBehindOf
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  onTagTriggerStays: []
   onTagTriggerExits: []
   onTagCollisionEnters: []
   onTagCollisionExits: []
@@ -1278,6 +1298,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  onTagTriggerStays: []
   onTagTriggerExits: []
   onTagCollisionEnters: []
   onTagCollisionExits: []
@@ -1388,6 +1409,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  onTagTriggerStays: []
   onTagTriggerExits: []
   onTagCollisionEnters: []
   onTagCollisionExits: []
@@ -1406,6 +1428,103 @@ MonoBehaviour:
   wall: {fileID: 510612848182901638}
   nextWallSide: {fileID: 994549149901969151}
   side: 0
+--- !u!1 &5701436340427900525
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 129847909880027814}
+  - component: {fileID: 8598944646065062917}
+  - component: {fileID: 4230556891314245222}
+  m_Layer: 0
+  m_Name: Triger For Transparent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &129847909880027814
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5701436340427900525}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1.047}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8980732007695057387}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &8598944646065062917
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5701436340427900525}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.2, y: 1, z: 1}
+  m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!114 &4230556891314245222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5701436340427900525}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26d6e4380479044fa8dac71b35b974ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactable: 1
+  onTagTriggerEnters:
+  - tag: Character
+    onTriggerEnter:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 991224627313659139}
+          m_MethodName: OnObjectBehindOf
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  onTagTriggerStays:
+  - tag: Character
+    onTriggerStay:
+      m_PersistentCalls:
+        m_Calls: []
+  onTagTriggerExits:
+  - tag: Character
+    onTriggerExit:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 991224627313659139}
+          m_MethodName: OnObjectNotBehindOf
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  onTagCollisionEnters: []
+  onTagCollisionExits: []
 --- !u!1 &5718978651773380662
 GameObject:
   m_ObjectHideFlags: 0
@@ -1498,6 +1617,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  onTagTriggerStays: []
   onTagTriggerExits: []
   onTagCollisionEnters: []
   onTagCollisionExits: []
@@ -1608,6 +1728,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 991224627313659139}
+          m_MethodName: OnObjectNotBehindOf
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  onTagTriggerStays: []
   onTagTriggerExits: []
   onTagCollisionEnters: []
   onTagCollisionExits: []
@@ -1718,6 +1850,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 991224627313659139}
+          m_MethodName: OnObjectBehindOf
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  onTagTriggerStays: []
   onTagTriggerExits: []
   onTagCollisionEnters: []
   onTagCollisionExits: []
@@ -1828,6 +1972,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  onTagTriggerStays: []
   onTagTriggerExits: []
   onTagCollisionEnters: []
   onTagCollisionExits: []
@@ -1938,6 +2083,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  onTagTriggerStays: []
   onTagTriggerExits: []
   onTagCollisionEnters: []
   onTagCollisionExits: []
@@ -2048,6 +2194,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  onTagTriggerStays: []
   onTagTriggerExits: []
   onTagCollisionEnters: []
   onTagCollisionExits: []
@@ -2158,6 +2305,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  onTagTriggerStays: []
   onTagTriggerExits: []
   onTagCollisionEnters: []
   onTagCollisionExits: []
@@ -2268,6 +2416,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  onTagTriggerStays: []
   onTagTriggerExits: []
   onTagCollisionEnters: []
   onTagCollisionExits: []
@@ -2378,6 +2527,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 991224627313659139}
+          m_MethodName: OnObjectBehindOf
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  onTagTriggerStays: []
   onTagTriggerExits: []
   onTagCollisionEnters: []
   onTagCollisionExits: []
@@ -2488,6 +2649,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 991224627313659139}
+          m_MethodName: OnObjectNotBehindOf
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  onTagTriggerStays: []
   onTagTriggerExits: []
   onTagCollisionEnters: []
   onTagCollisionExits: []
@@ -2598,6 +2771,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  onTagTriggerStays: []
   onTagTriggerExits: []
   onTagCollisionEnters: []
   onTagCollisionExits: []
@@ -2645,7 +2819,7 @@ Transform:
   m_Children:
   - {fileID: 8980732007333886383}
   m_Father: {fileID: 8980732007695057387}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8980732006587795385
 GameObject:
@@ -2706,6 +2880,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8980732007128963229}
   - component: {fileID: 8980732007296265537}
+  - component: {fileID: 991224627313659139}
+  - component: {fileID: 3025348226945354129}
   m_Layer: 0
   m_Name: Building
   m_TagString: Untagged
@@ -2741,6 +2917,109 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildingTransform: {fileID: 8980732007695057387}
+--- !u!114 &991224627313659139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8980732007296265536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c974d817a7704f449e0c84e5f8f6c76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectRenderer: {fileID: 8980732007333886381}
+  transparentMaterial: {fileID: 2100000, guid: 664701315f07e46749e11ae619438138, type: 2}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 512
+  onObjectBehindOf:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3025348226945354129}
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onObjectNotBehindOf:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3025348226945354129}
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  characterRoll: 0
+--- !u!114 &3025348226945354129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8980732007296265536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fe91dc294731a9428c0941ea7579110, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  complexMaskingMode: 0
+  drawingMode: 1
+  outlineLayer: 1
+  outlineTargets:
+  - IsVisible: 1
+    CutoutMask: 8
+    edgeDilateAmount: 5
+    frontEdgeDilateAmount: 5
+    backEdgeDilateAmount: 5
+    renderer: {fileID: 8980732007333886381}
+    SubmeshIndex: 0
+    BoundsMode: 0
+    Bounds:
+      m_Center: {x: 0, y: 0, z: 0}
+      m_Extent: {x: 0.5, y: 0.5, z: 0.5}
+    CutoutThreshold: 0.5
+    CullMode: 1
+    cutoutTextureName: 
+    DilateRenderingMode: 0
+    cutoutTextureIndex: 0
+  renderStyle: 1
+  outlineParameters:
+    enabled: 0
+    color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+    dilateShift: 1
+    blurShift: 1
+    fillPass:
+      shader: {fileID: 4800000, guid: 799033b0d33c8ca40ac949403ec6ee87, type: 3}
+      serializedProperties: []
+  backParameters:
+    enabled: 1
+    color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+    dilateShift: 1
+    blurShift: 1
+    fillPass:
+      shader: {fileID: 0}
+      serializedProperties: []
+  frontParameters:
+    enabled: 1
+    color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+    dilateShift: 1
+    blurShift: 1
+    fillPass:
+      shader: {fileID: 0}
+      serializedProperties: []
 --- !u!1 &8980732007333886382
 GameObject:
   m_ObjectHideFlags: 0
@@ -2752,6 +3031,7 @@ GameObject:
   - component: {fileID: 8980732007333886383}
   - component: {fileID: 8980732007333886370}
   - component: {fileID: 8980732007333886381}
+  - component: {fileID: 7260238374830444505}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -2820,6 +3100,18 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &7260238374830444505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8980732007333886382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 034bc47afcbf5e141a58d5c20b7808e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8980732007663373677
 GameObject:
   m_ObjectHideFlags: 0
@@ -2912,6 +3204,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  onTagTriggerStays: []
   onTagTriggerExits: []
   onTagCollisionEnters: []
   onTagCollisionExits: []
@@ -2960,6 +3253,7 @@ Transform:
   m_LocalScale: {x: 12, y: 12, z: 12}
   m_Children:
   - {fileID: 8980732008368365488}
+  - {fileID: 129847909880027814}
   - {fileID: 8980732006268904822}
   m_Father: {fileID: 8980732007128963229}
   m_RootOrder: 0
@@ -3085,6 +3379,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 991224627313659139}
+          m_MethodName: OnObjectNotBehindOf
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  onTagTriggerStays: []
   onTagTriggerExits: []
   onTagCollisionEnters: []
   onTagCollisionExits: []

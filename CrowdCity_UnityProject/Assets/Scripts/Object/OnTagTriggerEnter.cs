@@ -9,7 +9,7 @@ public class OnTagTriggerEnter
 
     public void CheckAndInvoke(Collider collider)
     {
-        if (collider.tag == tag)
+        if (collider.CompareTag(tag))
             onTriggerEnter?.Invoke(collider);
     }
 }

@@ -10,6 +10,8 @@ using UnityEngine.Events;
 
 [Serializable] public class OnTriggerEnter : UnityEvent<Collider> { }
 
+[Serializable] public class OnTriggerStay : UnityEvent<Collider> { }
+
 [Serializable] public class OnTriggerExit : UnityEvent<Collider> { }
 
 [Serializable] public class OnCollisionEnter : UnityEvent<Collision> { }

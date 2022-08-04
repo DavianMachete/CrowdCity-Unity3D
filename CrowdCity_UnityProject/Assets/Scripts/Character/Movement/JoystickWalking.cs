@@ -35,7 +35,7 @@ public class JoystickWalking
             prevTargetDirection = targetDirection;
         }
 
-        Vector3 currentDir = GetDirectionByWall().normalized;
+        Vector3 currentDir = Utilities.GetDirectionByWall(movementController.CurrentWall,targetDirection).normalized;
 
         m_Agent.Move(m_Agent.speed * Time.deltaTime * currentDir);
 
@@ -46,54 +46,6 @@ public class JoystickWalking
                 Time.deltaTime * 8f);
         }
 
-        return m_Agent.speed * currentDir.normalized;
-    }
-
-    Vector3 newDir = Vector3.zero;
-    private Vector3 GetDirectionByWall()
-    {
-        if (movementController.CurrentWall == null)
-            return targetDirection;
-
-        switch (movementController.CurrentWall.BuildingSide)
-        {
-            case BuildingSide.Front:
-                {
-                    newDir.z = 0f;
-                    newDir.x = targetDirection.x;
-                    newDir.y = targetDirection.z;
-                }
-                return newDir;
-            case BuildingSide.Right:
-                {
-                    newDir.x = 0f;
-                    newDir.z = targetDirection.z;
-                    newDir.y = targetDirection.x * -1f;
-                }
-                return newDir;
-            case BuildingSide.Back:
-                {
-                    newDir.z = 0f;
-                    newDir.x = targetDirection.x;
-                    newDir.y = targetDirection.z * -1f;
-                }
-                return newDir;
-            case BuildingSide.Left:
-                {
-                    newDir.x = 0f;
-                    newDir.z = targetDirection.z;
-                    newDir.y = targetDirection.x;
-                }
-                return newDir;
-            case BuildingSide.Top:
-            case BuildingSide.Ground:
-            default:
-                {
-                    newDir.y = 0f;
-                    newDir.z = targetDirection.z;
-                    newDir.x = targetDirection.x;
-                }
-                return newDir;
-        }
+        return m_Agent.speed * currentDir;
     }
 }

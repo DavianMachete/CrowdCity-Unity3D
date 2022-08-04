@@ -13,6 +13,7 @@ public class ObjectInteractionController : MonoBehaviour
     #region Serialized Fields
 
     [SerializeField] private List<OnTagTriggerEnter> onTagTriggerEnters;
+    [SerializeField] private List<OnTagTriggerStay> onTagTriggerStays;
     [SerializeField] private List<OnTagTriggerExit> onTagTriggerExits;
 
     [SerializeField] private List<OnTagCollisionEnter> onTagCollisionEnters;
@@ -30,6 +31,17 @@ public class ObjectInteractionController : MonoBehaviour
         foreach (OnTagTriggerEnter te in onTagTriggerEnters)
         {
             te.CheckAndInvoke(other);
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (!interactable)
+            return;
+
+        foreach (OnTagTriggerStay ts in onTagTriggerStays)
+        {
+            ts.CheckAndInvoke(other);
         }
     }
 

@@ -50,6 +50,54 @@ public static class Utilities
         return origin + heading * dotP;
     }
 
+    private static Vector3 newDir = Vector3.zero;
+    public static Vector3 GetDirectionByWall(Wall wall, Vector3 targetDirection)
+    {
+        if (wall == null)
+            return targetDirection;
+
+        switch (wall.BuildingSide)
+        {
+            case BuildingSide.Front:
+                {
+                    newDir.z = 0f;
+                    newDir.x = targetDirection.x;
+                    newDir.y = targetDirection.z;
+                }
+                return newDir;
+            case BuildingSide.Right:
+                {
+                    newDir.x = 0f;
+                    newDir.z = targetDirection.z;
+                    newDir.y = targetDirection.x * -1f;
+                }
+                return newDir;
+            case BuildingSide.Back:
+                {
+                    newDir.z = 0f;
+                    newDir.x = targetDirection.x;
+                    newDir.y = targetDirection.z * -1f;
+                }
+                return newDir;
+            case BuildingSide.Left:
+                {
+                    newDir.x = 0f;
+                    newDir.z = targetDirection.z;
+                    newDir.y = targetDirection.x;
+                }
+                return newDir;
+            case BuildingSide.Top:
+            case BuildingSide.Ground:
+            default:
+                {
+                    newDir.y = 0f;
+                    newDir.z = targetDirection.z;
+                    newDir.x = targetDirection.x;
+                }
+                return newDir;
+        }
+    }
+
     public static bool LinesIntersection(out Vector3 intersection, Vector3 linePoint1,
         Vector3 lineVec1, Vector3 linePoint2, Vector3 lineVec2)
     {
