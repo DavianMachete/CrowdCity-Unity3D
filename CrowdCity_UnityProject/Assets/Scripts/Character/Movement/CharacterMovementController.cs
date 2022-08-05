@@ -39,19 +39,15 @@ public class CharacterMovementController : MonoBehaviour
         SetSpeed();
         SetPriority();
         movementType = MovementType.AI;
-        navMeshAgent.radius = 0.4f;
+        navMeshAgent.radius = 0.5f;
         if (character.Clan == Clan.Player)
         {
-            navMeshAgent.radius = 0.8f;
-            navMeshAgent.speed = CharacterManager.instance.playerSpeed;
-            navMeshAgent.ResetPath();
-            movementType = MovementType.Joystick;
-            navMeshAgent.updateRotation = false;
-            //if (character.Roll == CharacterRoll.Leader)
-            //{
-            //    movementType = MovementType.Joystick;
-            //    navMeshAgent.updateRotation = false;
-            //}
+            //navMeshAgent.radius = 1.2f;
+            if (character.Roll == CharacterRoll.Leader)
+            {
+                movementType = MovementType.Joystick;
+                navMeshAgent.updateRotation = false;
+            }
         }
     }
 
@@ -235,7 +231,7 @@ public class CharacterMovementController : MonoBehaviour
                 if (Character.leader == null)
                     Character.leader = CrowdManager.instance.GetLeader(Character.Clan);
                 if (!isMoveToWall)
-                    Velocity = followLeaderWolking.UpdateFollowLeaderWalking(Character.leader, CharacterManager.instance.followLeaderType);
+                    Velocity = followLeaderWolking.UpdateFollowLeaderWalking(Character.leader,CharacterManager.instance.followLeaderType);
             }
             else if(Character.Clan == Clan.None)
             {

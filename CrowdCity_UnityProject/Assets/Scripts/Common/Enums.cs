@@ -31,7 +31,8 @@ public enum MovementType
 public enum FollowLeaderType
 {
     ByAgentDestination,
-    ByAgentMove
+    ByAgentMove,
+    ByLeaderVelocity
 }
 
 public enum FollowerPositioning

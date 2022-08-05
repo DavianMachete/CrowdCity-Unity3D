@@ -17,6 +17,7 @@ public class CrowdManager : MonoBehaviour
     [SerializeField] private GameObject characterPrefab;
 
     [SerializeField] private int charactersMaxLimit = 2000;
+    [SerializeField] private int followersStartCount = 100;
     [SerializeField] private int crowdsCount = 4;
     [SerializeField] private int freeCharactersCountAtStart = 8;
     [SerializeField] private float freeCharacterGenerationDelay = 4f;

@@ -15,40 +15,66 @@ public class FollowLeaderWalking
         agent = controller.movementController.GetNavMeshAgent();
     }
 
+
+
     public Vector3 UpdateFollowLeaderWalking(CharacterController leaderCC, FollowLeaderType followLeaderType)
     {
-        if (followLeaderType == FollowLeaderType.ByAgentDestination && leaderCC.movementController.GetSpeedT() > 0.1f)
+        if(leaderCC.movementController.GetSpeedT() < 0.1f)
+            return Vector3.zero;
+
+
+        if (followLeaderType == FollowLeaderType.ByAgentDestination)
         {
             agent.destination = GetLocationAroundOnNavMesh(leaderCC);
             //agent.SetDestination(GetLocationAroundOnNavMesh(leaderCC));
             return agent.velocity;
         }
-        else if (leaderCC.movementController.GetSpeedT() > 0.1f)
+        else
         {
+            //if (agent.pathPending)
+                agent.ResetPath();
+
             Vector3 dir = GetDirectionToLocaltionAround(leaderCC);
             dir.y = 0f;
-            float speed = 0f; ;
-            if (dir.magnitude > 0f)
+
+            if (followLeaderType == FollowLeaderType.ByAgentMove)
             {
-                speed = dir.magnitude;
-                //if (speed > 0.2f)
-                //{
-                //    speed = leaderCC.movementController.GetNavMeshAgent().speed;
-                //}
-
-                agent.Move(speed * Time.deltaTime * dir.normalized);
-
-                if (dir != Vector3.zero)
+                float speed = 0f; ;
+                if (dir.magnitude > 0f)
                 {
-                    agent.transform.rotation =
-                        Quaternion.Slerp(agent.transform.rotation,
-                        Quaternion.LookRotation(dir.normalized, Vector3.up),
-                         Time.deltaTime * 20f);
+                    speed = dir.magnitude;
+
+                    agent.Move(speed * Time.deltaTime * dir.normalized);
+
+                    if (dir != Vector3.zero)
+                    {
+                        agent.transform.rotation =
+                            Quaternion.Slerp(agent.transform.rotation,
+                            Quaternion.LookRotation(dir.normalized, Vector3.up),
+                             Time.deltaTime * 20f);
+                    }
                 }
+                return speed * dir.normalized;
             }
-            return speed * dir.normalized;
+            else
+            {
+                dir += leaderCC.movementController.Velocity;
+                dir = Vector3.ClampMagnitude(dir, agent.speed);
+
+                Vector3 currentDir = Utilities.GetDirectionByWall(controller.movementController.CurrentWall, dir);
+
+                agent.Move(Time.deltaTime * currentDir);
+
+                if (currentDir != Vector3.zero)
+                {
+                    agent.transform.rotation = Quaternion.Lerp(agent.transform.rotation, Quaternion.LookRotation(currentDir.normalized,
+                        controller.movementController.CurrentWall == null ? Vector3.up : controller.movementController.CurrentWall.Normal),
+                        Time.deltaTime * 8f);
+                }
+
+                return currentDir;
+            }
         }
-        else return Vector3.zero;
     }
 
     private Vector3 GetDirectionToLocaltionAround(CharacterController leaderCC)
