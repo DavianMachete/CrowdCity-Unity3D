@@ -75,6 +75,7 @@ MonoBehaviour:
   movementType: 0
   Velocity: {x: 0, y: 0, z: 0}
   wallOffset: 2
+  wallChangeSpeedMultiplier: 0.85
 --- !u!114 &6162386308945435360
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102,6 +103,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactable: 1
   onTagTriggerEnters: []
+  onTagTriggerStays: []
   onTagTriggerExits: []
   onTagCollisionEnters:
   - tag: Character

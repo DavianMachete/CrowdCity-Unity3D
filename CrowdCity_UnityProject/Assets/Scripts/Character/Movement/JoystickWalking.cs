@@ -46,6 +46,6 @@ public class JoystickWalking
                 Time.deltaTime * 8f);
         }
 
-        return m_Agent.speed * currentDir;
+        return m_Agent.speed * targetDirection.normalized;
     }
 }

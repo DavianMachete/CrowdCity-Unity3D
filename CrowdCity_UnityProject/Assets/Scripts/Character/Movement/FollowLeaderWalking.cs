@@ -19,7 +19,7 @@ public class FollowLeaderWalking
 
     public Vector3 UpdateFollowLeaderWalking(CharacterController leaderCC, FollowLeaderType followLeaderType)
     {
-        if(leaderCC.movementController.GetSpeedT() < 0.1f)
+        if (leaderCC.movementController.GetSpeedT() < 0.1f)
             return Vector3.zero;
 
 
@@ -32,10 +32,13 @@ public class FollowLeaderWalking
         else
         {
             //if (agent.pathPending)
-                agent.ResetPath();
+            agent.ResetPath();
 
             Vector3 dir = GetDirectionToLocaltionAround(leaderCC);
             dir.y = 0f;
+
+            //if (controller.movementController.IsMoveToWall)
+            //    dir = Vector3.zero;
 
             if (followLeaderType == FollowLeaderType.ByAgentMove)
             {
@@ -85,11 +88,11 @@ public class FollowLeaderWalking
     private Vector3 GetLocationAround(CharacterController leaderCC, bool withAngle = true)
     {
         float angle = 0f;
-        if(withAngle)
-            angle =Vector3.SignedAngle(Vector3.forward, leaderCC.transform.forward, Vector3.up);
+        if (withAngle)
+            angle = Vector3.SignedAngle(Vector3.forward, leaderCC.transform.forward, Vector3.up);
         Vector3 pos =
             leaderCC.transform.position +
-            Quaternion.AngleAxis(angle, Vector3.up) *
+            //Quaternion.AngleAxis(angle, Vector3.up) *
             CharacterManager.instance.positionVectors[controller.indexInCrowd - 1];
         return pos;
     }

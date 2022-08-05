@@ -10,6 +10,7 @@ public class CharacterMovementController : MonoBehaviour
     public Vector3 Velocity = Vector3.zero;
     public Wall CurrentWall { get; private set; }
     public CharacterController Character { get; private set; }
+    public bool IsMoveToWall { get; private set; }
 
 
     private NavMeshAgent navMeshAgent;
@@ -21,6 +22,7 @@ public class CharacterMovementController : MonoBehaviour
 
 
     [SerializeField] private float wallOffset = 0.5f;
+    [SerializeField] private float wallChangeSpeedMultiplier = 2f;
 
 
     public void Prepare(CharacterController character)
@@ -129,13 +131,12 @@ public class CharacterMovementController : MonoBehaviour
 
     #region Coroutines
 
-    private bool isMoveToWall = false;
     private Coroutine IMoveToWallHelper;
     private IEnumerator IMoveToWall(WallSide wallSide)
     {
         //Turn Off other movement and iteraction controllers
 
-        isMoveToWall = true;
+        IsMoveToWall = true;
         characterCollider.enabled = false;
         //navMeshAgent.ResetPath();
         navMeshAgent.enabled = false;
@@ -151,7 +152,7 @@ public class CharacterMovementController : MonoBehaviour
 
 
         float lenght = Vector3.Distance(startPos, wallSidePoint);
-        float dur = lenght / navMeshAgent.speed;
+        float dur = lenght / (navMeshAgent.speed * wallChangeSpeedMultiplier);
 
         float t = 0f;
 
@@ -174,7 +175,7 @@ public class CharacterMovementController : MonoBehaviour
 
         //second side
         lenght = Vector3.Distance(wallSidePoint, targetPos);
-        dur = lenght / navMeshAgent.speed;
+        dur = lenght / (navMeshAgent.speed * wallChangeSpeedMultiplier);
 
         t = 0f;
         while (t  <= dur)
@@ -195,7 +196,7 @@ public class CharacterMovementController : MonoBehaviour
         characterCollider.enabled = true;
         navMeshAgent.enabled = true;
 
-        isMoveToWall = false;
+        IsMoveToWall = false;
 
         IMoveToWallHelper = null;
     }
@@ -212,14 +213,14 @@ public class CharacterMovementController : MonoBehaviour
                 {
                     if (joystickWalk == null)
                         joystickWalk = new JoystickWalking(this);
-                    if (!isMoveToWall)
+                    if (!IsMoveToWall)
                         Velocity=joystickWalk.UpdateJoystickWalk();
                 }
                 else
                 {
                     if (randomWalk == null)
                         randomWalk = new RandomWalking(navMeshAgent);
-                    if (!isMoveToWall)
+                    if (!IsMoveToWall)
                         Velocity = randomWalk.UpdateRandomWalk();
                 }
             }
@@ -230,18 +231,18 @@ public class CharacterMovementController : MonoBehaviour
 
                 if (Character.leader == null)
                     Character.leader = CrowdManager.instance.GetLeader(Character.Clan);
-                if (!isMoveToWall)
+                if (!IsMoveToWall)
                     Velocity = followLeaderWolking.UpdateFollowLeaderWalking(Character.leader,CharacterManager.instance.followLeaderType);
             }
             else if(Character.Clan == Clan.None)
             {
                 if (randomWalk == null)
                     randomWalk = new RandomWalking(navMeshAgent);
-                if (!isMoveToWall)
+                if (!IsMoveToWall)
                     Velocity = randomWalk.UpdateRandomWalk();
             }
 
-            Character.animationController.SetCharacterSpeed(isMoveToWall ? 1f : GetSpeedT());
+            Character.animationController.SetCharacterSpeed(IsMoveToWall ? 1f : GetSpeedT());
 
             yield return null;
         }

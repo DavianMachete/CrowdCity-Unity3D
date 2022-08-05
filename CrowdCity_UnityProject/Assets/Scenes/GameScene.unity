@@ -4544,7 +4544,7 @@ MonoBehaviour:
   freeCharactersSpeed: 4
   followLeaderType: 2
   followerPositioning: 2
-  radius: 0.5
+  radius: 0.8
   isVelocityOfPlayerStatic: 1
   stopWhenJoystickDisable: 0
   positionVectors: []
@@ -5719,6 +5719,7 @@ MonoBehaviour:
   characterPrefab: {fileID: 7130196981989536477, guid: eb449830d381f4489b5c3b318d44f401,
     type: 3}
   charactersMaxLimit: 2000
+  followersStartCount: 50
   crowdsCount: 4
   freeCharactersCountAtStart: 8
   freeCharacterGenerationDelay: 4

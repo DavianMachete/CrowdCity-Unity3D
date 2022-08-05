@@ -125,9 +125,12 @@ public class CrowdManager : MonoBehaviour
 
     public CharacterController InstantiateCharacter(Clan clan,CharacterRoll roll,bool startMovement = false)
     {
-        GameObject newCharacter = Instantiate(characterPrefab,
-            EnviromentManager.instance.GetRandomLocationInArea(),
-            Quaternion.identity);
+        return InstantiateCharacter(clan, roll, EnviromentManager.instance.GetRandomLocationInArea(), startMovement);
+    }
+
+    public CharacterController InstantiateCharacter(Clan clan, CharacterRoll roll,Vector3 position, bool startMovement = false)
+    {
+        GameObject newCharacter = Instantiate(characterPrefab, Utilities.GetLocation(position), Quaternion.identity);
 
         string name = clan.ToString();
         if (roll == CharacterRoll.Follower && clan != Clan.None)
@@ -215,6 +218,14 @@ public class CrowdManager : MonoBehaviour
             Crowd newCrowd = new Crowd(leader);
             Crowds.Add(newCrowd);
             leader.PrepareCrowdCounter();
+
+            for (int j = 0; j < followersStartCount; j++)
+            {
+                CharacterController follower =
+                    InstantiateCharacter((Clan)i,CharacterRoll.Follower,
+                    leader.transform.position + CharacterManager.instance.positionVectors[newCrowd.followers.Count]);
+                newCrowd.AddFollower(follower);
+            }
         }
     }
 

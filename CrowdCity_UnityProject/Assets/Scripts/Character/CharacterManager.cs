@@ -88,26 +88,60 @@ public class CharacterManager : MonoBehaviour
     private List<Vector3> GeneratePositionVectors()
     {
         List<Vector3> vectors = new List<Vector3>();
+        Vector3 pos;
 
-        float c = 2f * PI * radius;
-        int counter = 1;
-        int wave = 1;
-        for (int i = 1; i <= CrowdManager.instance.CharactersMaxLimit; i++)
+
+        float currentCircleRadius = radius;
+        while (vectors.Count < CrowdManager.instance.CharactersMaxLimit)
         {
-            Vector3 pos = Vector3.forward * radius;
-            float cr = c / radius;
-            if (cr + counter < i)
+            float currentCircleLength = 2 * Mathf.PI * currentCircleRadius;
+
+            float posAmountInCurrentCircle = currentCircleLength / radius;
+            float deltaAngle = 360f / posAmountInCurrentCircle;
+
+            float currentAngle = 0;
+            for (int i = 0; i < posAmountInCurrentCircle; i++)
             {
-                wave++;
-                c *= 2;
-                counter += Mathf.FloorToInt(cr);
+                pos = Quaternion.AngleAxis(currentAngle, Vector3.up) * Vector3.right;
+                pos *= currentCircleRadius;
+
+                vectors.Add(pos);
+
+                currentAngle += deltaAngle;
             }
 
-            float angle = 360f / cr * (i-counter);
-            pos = Quaternion.AngleAxis(angle, Vector3.up) * pos;
-            pos *= wave * radius;
-            vectors.Add(pos);
+            currentCircleRadius += radius;
         }
+
+
         return vectors;
+
+
+
+
+
+
+        //List <Vector3> vectors = new List<Vector3>();
+
+        //float c = 2f * Mathf.PI * radius;
+        //int counter = 1;
+        //int wave = 1;
+        //for (int i = 1; i <= CrowdManager.instance.CharactersMaxLimit; i++)
+        //{
+        //    Vector3 pos = Vector3.forward * radius;
+        //    float cr = c / radius;
+        //    if (cr + counter < i)
+        //    {
+        //        wave++;
+        //        c *= 2;
+        //        counter += Mathf.FloorToInt(cr);
+        //    }
+
+        //    float angle = 360f / cr * (i - counter);
+        //    pos = Quaternion.AngleAxis(angle, Vector3.up) * pos;
+        //    pos *= wave * radius;
+        //    vectors.Add(pos);
+        //}
+        //return vectors;
     }
 }
