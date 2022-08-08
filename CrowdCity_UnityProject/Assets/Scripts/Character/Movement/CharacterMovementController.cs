@@ -120,7 +120,7 @@ public class CharacterMovementController : MonoBehaviour
 
     private void MoveOnWall(WallSide wallSide)
     {
-        if (Vector3.Dot(transform.forward, wallSide.transform.forward) <= 0)
+        if (Vector3.Dot(transform.forward, wallSide.transform.forward) < 0)
             return;
 
         if (IMoveToWallHelper == null)
@@ -170,7 +170,7 @@ public class CharacterMovementController : MonoBehaviour
             transform.rotation = Quaternion.Slerp(startRot, targetRot, (t / dur) / 2f);
 
             t += Time.deltaTime;
-            yield return null;
+            yield return new WaitForEndOfFrame();
         }
 
         //second side
@@ -187,7 +187,7 @@ public class CharacterMovementController : MonoBehaviour
             transform.rotation = Quaternion.Slerp(startRot, targetRot, 0.5f + (t / dur) / 2f);
 
             t += Time.deltaTime;
-            yield return null;
+            yield return new WaitForEndOfFrame();
         }
         transform.rotation = targetRot;
 
@@ -244,7 +244,7 @@ public class CharacterMovementController : MonoBehaviour
 
             Character.animationController.SetCharacterSpeed(IsMoveToWall ? 1f : GetSpeedT());
 
-            yield return null;
+            yield return new WaitForEndOfFrame();
         }
     }
 

@@ -74,7 +74,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementType: 0
   Velocity: {x: 0, y: 0, z: 0}
-  wallOffset: 2
+  wallOffset: 1
   wallChangeSpeedMultiplier: 0.85
 --- !u!114 &6162386308945435360
 MonoBehaviour:

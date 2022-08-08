@@ -82,7 +82,27 @@ public class FollowLeaderWalking
 
     private Vector3 GetDirectionToLocaltionAround(CharacterController leaderCC)
     {
-        return GetLocationAround(leaderCC) - agent.transform.position;
+
+        return GetLocationAround(leaderCC) - controller.transform.position;
+        //Vector3 characterWallNormal = controller.movementController.CurrentWall == null ? Vector3.up :
+        //    controller.movementController.CurrentWall.Normal;
+        //Vector3 leaderWallNormall = leaderCC.movementController.CurrentWall == null ? Vector3.up :
+        //    leaderCC.movementController.CurrentWall.Normal;
+
+
+        //if (Mathf.Abs(Vector3.Dot(characterWallNormal, leaderWallNormall)) > 0.01f)
+        //    return GetLocationAround(leaderCC) - controller.transform.position;
+
+        //else //if(Mathf.Abs(Vector3.Dot(controller.movementController.CurrentWall.Normal, leaderCC.movementController.CurrentWall.Normal)) < 0.01f)
+        //{
+        //    Vector3 projection = Vector3.ProjectOnPlane(GetLocationAround(leaderCC) - controller.transform.position,
+        //        characterWallNormal);
+
+        //    Vector3 nextProjection = (GetLocationAround(leaderCC) - controller.transform.position) -
+        //        projection;
+
+        //    return projection.normalized * (projection.magnitude + nextProjection.magnitude);
+        //}
     }
 
     private Vector3 GetLocationAround(CharacterController leaderCC, bool withAngle = true)
