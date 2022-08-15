@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Machete.Character;
 using UnityEngine;
 
 public class CrowdManager : MonoBehaviour
@@ -9,7 +10,7 @@ public class CrowdManager : MonoBehaviour
     public int CharactersCount { get { return CharactersCountInCrowds() + FreeCharacters.Count; } }
     public int CharactersMaxLimit { get { return charactersMaxLimit; } }
 
-    [HideInInspector] public List<CharacterController> FreeCharacters;
+    [HideInInspector] public List<Character> FreeCharacters;
     public List<Crowd> Crowds;
 
     public List<CrowdMaterial> crowdMaterials;
@@ -57,7 +58,7 @@ public class CrowdManager : MonoBehaviour
         Crowds.Clear();
 
         if (FreeCharacters == null)
-            FreeCharacters = new List<CharacterController>();
+            FreeCharacters = new List<Character>();
         FreeCharacters.Clear();
 
         GenerateCrowds();
@@ -71,13 +72,13 @@ public class CrowdManager : MonoBehaviour
         foreach (Crowd crowd in Crowds)
         {
             crowd.leader.StartCharacter();
-            foreach (CharacterController follower in crowd.followers)
+            foreach (Character follower in crowd.followers)
             {
                 follower.StartCharacter();
             }
         }
 
-        foreach (CharacterController freeCharacter in FreeCharacters)
+        foreach (Character freeCharacter in FreeCharacters)
         {
             freeCharacter.StartCharacter();
         }
@@ -118,19 +119,19 @@ public class CrowdManager : MonoBehaviour
     //    seekingCollisonDistance = distance;
     //}
 
-    public CharacterController GetLeader(Clan clan)
+    public Character GetLeader(Clan clan)
     {
         return GetCrowd(clan).leader;
     }
 
-    public CharacterController InstantiateCharacter(Clan clan,CharacterRoll roll,bool startMovement = false)
+    public Character InstantiateCharacter(Clan clan,CharacterRoll roll,bool startMovement = false)
     {
-        return InstantiateCharacter(clan, roll, EnviromentManager.instance.GetRandomLocationInArea(), startMovement);
+        return InstantiateCharacter(clan, roll, EnviromentManager.instance.GetRandomPosInArea(), startMovement);
     }
 
-    public CharacterController InstantiateCharacter(Clan clan, CharacterRoll roll,Vector3 position, bool startMovement = false)
+    public Character InstantiateCharacter(Clan clan, CharacterRoll roll,Vector3 position, bool startMovement = false)
     {
-        GameObject newCharacter = Instantiate(characterPrefab, Utilities.GetLocation(position), Quaternion.identity);
+        GameObject newCharacter = Instantiate(characterPrefab, Utilities.GetPointByRayCast(position), Quaternion.identity);
 
         string name = clan.ToString();
         if (roll == CharacterRoll.Follower && clan != Clan.None)
@@ -139,7 +140,7 @@ public class CrowdManager : MonoBehaviour
             name = $"free characters = {FreeCharacters.Count + 1}";
         newCharacter.name = name;
 
-        CharacterController newCC = newCharacter.GetComponent<CharacterController>();
+        Character newCC = newCharacter.GetComponent<Character>();
 
         if (roll == CharacterRoll.Leader)
             newCC.SetMaterial(GetCrowdLeaderMaterial(clan));
@@ -188,7 +189,7 @@ public class CrowdManager : MonoBehaviour
         Crowds.Remove(c);
     }
 
-    public void RemoveFreeCharacter(CharacterController characterController)
+    public void RemoveFreeCharacter(Character characterController)
     {
         FreeCharacters.Remove(characterController);
     }
@@ -208,7 +209,7 @@ public class CrowdManager : MonoBehaviour
     {
         for (int i = 1; i < crowdsCount+1; i++)
         {
-            CharacterController leader = InstantiateCharacter((Clan)i, CharacterRoll.Leader);
+            Character leader = InstantiateCharacter((Clan)i, CharacterRoll.Leader);
             if (i == 1)
             {
                 PlayerController.instance.SetPlayer(leader);
@@ -221,7 +222,7 @@ public class CrowdManager : MonoBehaviour
 
             for (int j = 0; j < followersStartCount; j++)
             {
-                CharacterController follower =
+                Character follower =
                     InstantiateCharacter((Clan)i,CharacterRoll.Follower,
                     leader.transform.position + CharacterManager.instance.positionVectors[newCrowd.followers.Count]);
                 newCrowd.AddFollower(follower);
@@ -241,12 +242,12 @@ public class CrowdManager : MonoBehaviour
 
         for (int i = 0; i < count ; i++)
         {
-            CharacterController freeCharacter = InstantiateCharacter(0, CharacterRoll.Free, startMovement);
+            Character freeCharacter = InstantiateCharacter(0, CharacterRoll.Free, startMovement);
             FreeCharacters.Add(freeCharacter);
             //characters.Add(freeCharacter);
         }
 
-        //Debug.Log($"CharactersCount = {CharactersCount}");
+        Debug.Log($"CharactersCount = {CharactersCount}");
         //Debug.Log($"characters.Count = {characters.Count}");
     }
 
@@ -262,7 +263,7 @@ public class CrowdManager : MonoBehaviour
 
         if (FreeCharacters != null)
         {
-            foreach (CharacterController cc in FreeCharacters)
+            foreach (Character cc in FreeCharacters)
             {
                 cc.DestroyCharacter();
             }

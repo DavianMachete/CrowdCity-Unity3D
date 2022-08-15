@@ -28,13 +28,6 @@ public enum MovementType
     AI
 }
 
-public enum FollowLeaderType
-{
-    ByAgentDestination,
-    ByAgentMove,
-    ByLeaderVelocity
-}
-
 public enum FollowerPositioning
 {
     RandomAround,
