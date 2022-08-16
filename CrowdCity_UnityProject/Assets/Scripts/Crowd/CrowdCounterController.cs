@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using Machete.Character;
 
 public class CrowdCounterController : MonoBehaviour
 {
@@ -47,7 +48,7 @@ public class CrowdCounterController : MonoBehaviour
         minX = maxX * -1f;
     }
 
-    public void Prepare(CharacterController leader)
+    public void Prepare(Character leader)
     {
         gameObject.name = $"{leader.name}'s crowd counter";
         leaderTransform = leader.transform;

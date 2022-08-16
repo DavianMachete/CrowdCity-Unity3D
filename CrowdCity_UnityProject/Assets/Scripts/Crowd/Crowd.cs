@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Machete.Character;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -9,30 +10,30 @@ public class Crowd
 {
     public string crowdName;
     public Clan clan;
-    public CharacterController leader;
-    public List<CharacterController> followers;
+    public Character leader;
+    public List<Character> followers;
 
     public UnityAction<int> OnCountUpdated;
     public int Count { get { return followers.Count + 1; } }
 
-    public Crowd (CharacterController leader)
+    public Crowd (Character leader)
     {
         leader.indexInCrowd = 0;
-        followers = new List<CharacterController>();
+        followers = new List<Character>();
         crowdName = $"{leader.name}'s Crowd";
         clan = leader.Clan;
 
         this.leader = leader;
     }
 
-    public void RemoveFollower(CharacterController character)
+    public void RemoveFollower(Character character)
     {
         followers.Remove(character);
         OnCountUpdated?.Invoke(Count);
         UpdateCrowdIndexes();
     }
 
-    public void AddFollower(CharacterController character)
+    public void AddFollower(Character character)
     {
         followers.Add(character);
         OnCountUpdated?.Invoke(Count);

@@ -4,48 +4,52 @@ using UnityEngine;
 using UnityEngine.AI;
 
 
-public class JoystickWalking
+namespace Machete.Character
 {
-    private CharacterMovementController movementController;
-    private NavMeshAgent m_Agent;
-    private Vector3 targetDirection = Vector3.zero;
-    private Vector3 prevTargetDirection = Vector3.zero;
-    private Transform transform;
-
-    public JoystickWalking(CharacterMovementController movementController)
+    public class JoystickWalking
     {
-        this.movementController = movementController;
-        m_Agent = movementController.GetNavMeshAgent();
-        transform = movementController.transform;
-        prevTargetDirection = transform.forward;
-    }
+        private readonly CharacterMovementController movementController;
+        private readonly CharacterController characterController;
+        private readonly Transform transform;
+        private Vector3 targetDirection = Vector3.zero;
+        private Vector3 prevTargetDirection = Vector3.zero;
 
-    public Vector3 UpdateJoystickWalk()
-    {
-        targetDirection.x = JoysticManager.instance.Horizontal;
-        targetDirection.z = JoysticManager.instance.Vertical;
-        targetDirection.y = 0f;
-
-        if (targetDirection.magnitude < 0.01f)
+        public JoystickWalking(CharacterMovementController movementController)
         {
-            targetDirection = prevTargetDirection;
+            this.movementController = movementController;
+
+            characterController = movementController.CharacterController;
+            transform = movementController.transform;
+            prevTargetDirection = transform.forward;
         }
-        else
+
+        public Vector3 UpdateJoystickWalk()
         {
-            prevTargetDirection = targetDirection;
+            targetDirection.x = JoysticManager.instance.Horizontal;
+            targetDirection.z = JoysticManager.instance.Vertical;
+            targetDirection.y = 0f;
+
+            if (targetDirection.magnitude < 0.01f)
+            {
+                targetDirection = prevTargetDirection;
+            }
+            else
+            {
+                prevTargetDirection = targetDirection;
+            }
+
+            Vector3 currentDir = Utilities.GetDirectionByWall(movementController.CurrentWall, targetDirection).normalized;
+
+            characterController.SimpleMove(10f * movementController.Speed * Time.deltaTime * currentDir);
+
+            if (targetDirection != Vector3.zero)
+            {
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(currentDir.normalized,
+                    movementController.CurrentWall == null ? Vector3.up : movementController.CurrentWall.Normal),
+                    Time.deltaTime * 8f);
+            }
+
+            return movementController.Speed * targetDirection.normalized;
         }
-
-        Vector3 currentDir = Utilities.GetDirectionByWall(movementController.CurrentWall,targetDirection).normalized;
-
-        m_Agent.Move(m_Agent.speed * Time.deltaTime * currentDir);
-
-        if (targetDirection!= Vector3.zero)
-        { 
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(currentDir.normalized,
-                movementController.CurrentWall==null? Vector3.up: movementController.CurrentWall.Normal),
-                Time.deltaTime * 8f);
-        }
-
-        return m_Agent.speed * targetDirection.normalized;
     }
 }
