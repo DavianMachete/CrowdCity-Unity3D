@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Machete.Character;
 using UnityEngine;
 
 public class Building : MonoBehaviour

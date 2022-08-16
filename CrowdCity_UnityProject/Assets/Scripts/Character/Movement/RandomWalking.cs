@@ -1,38 +1,23 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace Machete.Character
+// Walk to a random position and repeat
+public class RandomWalking 
 {
-    // Walk to a random position and repeat
-    public class RandomWalking
+    //public float m_Range = 25.0f;
+    NavMeshAgent m_Agent;
+
+    public RandomWalking(NavMeshAgent navMeshAgent)
     {
-        private CharacterMovementController movementController;
-        private readonly CharacterController characterController;
-        private Vector3 targetPosition;
+        m_Agent = navMeshAgent;
+    }
 
-        private Vector3 diff;
-        private Vector3 velocity;
+    public Vector3 UpdateRandomWalk()
+    {
+        if (m_Agent.pathPending || m_Agent.remainingDistance > 0.1f)
+            return m_Agent.velocity;
 
-        public RandomWalking(CharacterMovementController movementController)
-        {
-            this.movementController = movementController;
-
-            characterController = movementController.CharacterController;
-            targetPosition = movementController.transform.position;
-        }
-
-        public Vector3 UpdateRandomWalk()
-        {
-            if (Vector3.Distance(targetPosition, movementController.transform.position) < 0.2f)
-                targetPosition = Utilities.GetRandomLocation();
-
-            diff = targetPosition - movementController.transform.position;
-
-            velocity = 10f * movementController.Speed * Time.deltaTime * diff.normalized;
-
-            characterController.SimpleMove(velocity);
-
-            return velocity;
-        }
+        m_Agent.destination = Utilities.GetRandomLocation();
+        return m_Agent.velocity;
     }
 }

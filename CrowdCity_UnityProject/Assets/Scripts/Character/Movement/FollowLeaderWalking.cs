@@ -3,90 +3,142 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace Machete.Character
+public class FollowLeaderWalking
 {
-    public class FollowLeaderWalking
+    private readonly CharacterController controller;
+    private readonly NavMeshAgent agent;
+
+    public FollowLeaderWalking(CharacterController controller)
     {
-        private readonly Character controller;
+        this.controller = controller;
 
-        private CharacterMovementController movementController;
-        private CharacterController characterController;
+        agent = controller.movementController.GetNavMeshAgent();
+    }
 
-        public FollowLeaderWalking(Character controller)
+
+
+    public Vector3 UpdateFollowLeaderWalking(CharacterController leaderCC, FollowLeaderType followLeaderType)
+    {
+        if (leaderCC.movementController.GetSpeedT() < 0.1f)
+            return Vector3.zero;
+
+
+        if (followLeaderType == FollowLeaderType.ByAgentDestination)
         {
-            this.controller = controller;
-
-            movementController = controller.movementController;
-            characterController = movementController.CharacterController;
+            agent.destination = GetLocationAroundOnNavMesh(leaderCC);
+            //agent.SetDestination(GetLocationAroundOnNavMesh(leaderCC));
+            return agent.velocity;
         }
-
-
-
-        public Vector3 UpdateFollowLeaderWalking(Character leaderCC)
+        else
         {
-            if (leaderCC.movementController.GetSpeedT() < 0.1f)
-                return Vector3.zero;
+            //if (agent.pathPending)
+            agent.ResetPath();
 
             Vector3 dir = GetDirectionToLocaltionAround(leaderCC);
             dir.y = 0f;
 
-            dir += leaderCC.movementController.Velocity;
-            dir = Vector3.ClampMagnitude(dir, movementController.Speed);
+            //if (controller.movementController.IsMoveToWall)
+            //    dir = Vector3.zero;
 
-            Vector3 currentDir = Utilities.GetDirectionByWall(controller.movementController.CurrentWall, dir);
-
-            characterController.SimpleMove(10f * Time.deltaTime * currentDir);
-
-            if (currentDir != Vector3.zero)
+            if (followLeaderType == FollowLeaderType.ByAgentMove)
             {
-                movementController.transform.rotation = Quaternion.Lerp(movementController.transform.rotation, Quaternion.LookRotation(currentDir.normalized,
-                    controller.movementController.CurrentWall == null ? Vector3.up : controller.movementController.CurrentWall.Normal),
-                    Time.deltaTime * 8f);
+                float speed = 0f; ;
+                if (dir.magnitude > 0f)
+                {
+                    speed = dir.magnitude;
+
+                    agent.Move(speed * Time.deltaTime * dir.normalized);
+
+                    if (dir != Vector3.zero)
+                    {
+                        agent.transform.rotation =
+                            Quaternion.Slerp(agent.transform.rotation,
+                            Quaternion.LookRotation(dir.normalized, Vector3.up),
+                             Time.deltaTime * 20f);
+                    }
+                }
+                return speed * dir.normalized;
             }
+            else
+            {
+                dir += leaderCC.movementController.Velocity;
+                dir = Vector3.ClampMagnitude(dir, agent.speed);
 
-            return currentDir;
+                Vector3 currentDir = Utilities.GetDirectionByWall(controller.movementController.CurrentWall, dir);
+
+                agent.Move(Time.deltaTime * currentDir);
+
+                if (currentDir != Vector3.zero)
+                {
+                    agent.transform.rotation = Quaternion.Lerp(agent.transform.rotation, Quaternion.LookRotation(currentDir.normalized,
+                        controller.movementController.CurrentWall == null ? Vector3.up : controller.movementController.CurrentWall.Normal),
+                        Time.deltaTime * 8f);
+                }
+
+                return currentDir;
+            }
         }
+    }
 
-        private Vector3 GetDirectionToLocaltionAround(Character leaderCC)
-        {
-            return GetLocationAround(leaderCC) - controller.transform.position;
-        }
+    private Vector3 GetDirectionToLocaltionAround(CharacterController leaderCC)
+    {
 
-        private Vector3 GetLocationAround(Character leaderCC, bool withAngle = true)
-        {
-            float angle = 0f;
-            if (withAngle)
-                angle = Vector3.SignedAngle(Vector3.forward, leaderCC.transform.forward, Vector3.up);
-            Vector3 pos =
-                leaderCC.transform.position +
-                //Quaternion.AngleAxis(angle, Vector3.up) *
-                CharacterManager.instance.positionVectors[controller.indexInCrowd - 1];
-            return pos;
-        }
+        return GetLocationAround(leaderCC) - controller.transform.position;
+        //Vector3 characterWallNormal = controller.movementController.CurrentWall == null ? Vector3.up :
+        //    controller.movementController.CurrentWall.Normal;
+        //Vector3 leaderWallNormall = leaderCC.movementController.CurrentWall == null ? Vector3.up :
+        //    leaderCC.movementController.CurrentWall.Normal;
 
-        private Vector3 GetRandomLocationAround(Character leaderCC)
-        {
-            //float range = controller.indexInCrowd * CharacterManager.instance.radius / 2f;
-            Vector3 randomDirection = Random.insideUnitSphere * 5f;//range;
 
-            randomDirection += leaderCC.transform.position + leaderCC.transform.forward * 2f;
+        //if (Mathf.Abs(Vector3.Dot(characterWallNormal, leaderWallNormall)) > 0.01f)
+        //    return GetLocationAround(leaderCC) - controller.transform.position;
 
-            return randomDirection;
-        }
-
-        //private Vector3 GetLocationAroundOnNavMesh(CharacterController leaderCC)
+        //else //if(Mathf.Abs(Vector3.Dot(controller.movementController.CurrentWall.Normal, leaderCC.movementController.CurrentWall.Normal)) < 0.01f)
         //{
-        //    switch (CharacterManager.instance.followerPositioning)
-        //    {
-        //        case FollowerPositioning.ByRoundWaves:
-        //            return Utilities.GetLocation(GetLocationAround(leaderCC));
-        //        case FollowerPositioning.ByRoundWavesNoChangeAngle:
-        //            return Utilities.GetLocation(GetLocationAround(leaderCC, false));
-        //        case FollowerPositioning.RandomAround:
-        //            return Utilities.GetLocation(GetRandomLocationAround(leaderCC));
-        //        default:
-        //            return Utilities.GetLocation(GetRandomLocationAround(leaderCC));
-        //    }
+        //    Vector3 projection = Vector3.ProjectOnPlane(GetLocationAround(leaderCC) - controller.transform.position,
+        //        characterWallNormal);
+
+        //    Vector3 nextProjection = (GetLocationAround(leaderCC) - controller.transform.position) -
+        //        projection;
+
+        //    return projection.normalized * (projection.magnitude + nextProjection.magnitude);
         //}
+    }
+
+    private Vector3 GetLocationAround(CharacterController leaderCC, bool withAngle = true)
+    {
+        float angle = 0f;
+        if (withAngle)
+            angle = Vector3.SignedAngle(Vector3.forward, leaderCC.transform.forward, Vector3.up);
+        Vector3 pos =
+            leaderCC.transform.position +
+            //Quaternion.AngleAxis(angle, Vector3.up) *
+            CharacterManager.instance.positionVectors[controller.indexInCrowd - 1];
+        return pos;
+    }
+
+    private Vector3 GetRandomLocationAround(CharacterController leaderCC)
+    {
+        //float range = controller.indexInCrowd * CharacterManager.instance.radius / 2f;
+        Vector3 randomDirection = Random.insideUnitSphere * 5f;//range;
+
+        randomDirection += leaderCC.transform.position + leaderCC.transform.forward * 2f;
+
+        return randomDirection;
+    }
+
+    private Vector3 GetLocationAroundOnNavMesh(CharacterController leaderCC)
+    {
+        switch (CharacterManager.instance.followerPositioning)
+        {
+            case FollowerPositioning.ByRoundWaves:
+                return Utilities.GetLocation(GetLocationAround(leaderCC));
+            case FollowerPositioning.ByRoundWavesNoChangeAngle:
+                return Utilities.GetLocation(GetLocationAround(leaderCC, false));
+            case FollowerPositioning.RandomAround:
+                return Utilities.GetLocation(GetRandomLocationAround(leaderCC));
+            default:
+                return Utilities.GetLocation(GetRandomLocationAround(leaderCC));
+        }
     }
 }
