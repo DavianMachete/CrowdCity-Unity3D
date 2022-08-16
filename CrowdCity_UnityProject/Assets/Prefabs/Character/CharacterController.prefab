@@ -9,12 +9,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7130196981989536448}
-  - component: {fileID: 2496872254698182632}
+  - component: {fileID: 6931062076980257156}
   - component: {fileID: 7892548329662575389}
   - component: {fileID: 6162386308945435360}
   - component: {fileID: 5911256943376813179}
   - component: {fileID: 7130196981989536478}
-  - component: {fileID: 6945089180528718411}
+  - component: {fileID: 7130196981989536452}
+  - component: {fileID: 1850376070216383425}
+  - component: {fileID: 1913290287089230386}
   m_Layer: 0
   m_Name: CharacterController
   m_TagString: Character
@@ -37,7 +39,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2496872254698182632
+--- !u!114 &6931062076980257156
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -46,7 +48,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7130196981989536477}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1233530a51f14eebaa0b490411283c7, type: 3}
+  m_Script: {fileID: 11500000, guid: ed5754401651b4f79979e2fbe0d966ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Clan: 0
@@ -54,6 +56,7 @@ MonoBehaviour:
   indexInCrowd: 0
   movementController: {fileID: 7892548329662575389}
   animationController: {fileID: 6162386308945435360}
+  leader: {fileID: 0}
   renderers:
   - {fileID: 8011333800533665544}
   interactedByAnother: 0
@@ -107,7 +110,7 @@ MonoBehaviour:
     onCollisionEnter:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
+        - m_Target: {fileID: 6931062076980257156}
           m_MethodName: OnInteractWithCharacter
           m_Mode: 0
           m_Arguments:
@@ -176,8 +179,30 @@ MonoBehaviour:
     fillPass:
       shader: {fileID: 0}
       serializedProperties: []
---- !u!143 &6945089180528718411
-CharacterController:
+--- !u!195 &7130196981989536452
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7130196981989536477}
+  m_Enabled: 0
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 8
+  m_Acceleration: 50
+  avoidancePriority: 50
+  m_AngularSpeed: 280
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 0
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!65 &1850376070216383425
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -187,13 +212,24 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 2
-  m_Radius: 0.5
-  m_SlopeLimit: 60
-  m_StepOffset: 1
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Size: {x: 0.8, y: 0.3, z: 0.97593474}
+  m_Center: {x: 0, y: 0.15, z: 0.19308496}
+--- !u!54 &1913290287089230386
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7130196981989536477}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!114 &6804352070973728601
 MonoBehaviour:
   m_ObjectHideFlags: 0

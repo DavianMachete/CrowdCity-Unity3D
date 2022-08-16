@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Machete.Character;
 using UnityEngine;
 
 public class BuildingTransparentMaker : TransparentMaker
@@ -10,7 +9,7 @@ public class BuildingTransparentMaker : TransparentMaker
 
     public override void OnObjectBehindOf(Collider collider)
     {
-        Character cc = collider.GetComponent<Character>();
+        CharacterController cc = collider.GetComponent<CharacterController>();
         if (cc == null)
             return;
         if (cc.Roll != characterRoll)
@@ -21,7 +20,7 @@ public class BuildingTransparentMaker : TransparentMaker
 
     public override void OnObjectNotBehindOf(Collider collider)
     {
-        Character cc = collider.GetComponent<Character>();
+        CharacterController cc = collider.GetComponent<CharacterController>();
         if (cc == null)
             return;
         if (cc.Roll != characterRoll)

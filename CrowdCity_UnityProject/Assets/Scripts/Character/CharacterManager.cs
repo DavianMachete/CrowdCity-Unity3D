@@ -11,6 +11,7 @@ public class CharacterManager : MonoBehaviour
     public float followersSpeed = 9f;
     public float freeCharactersSpeed = 4f;
 
+    public FollowLeaderType followLeaderType;
     public FollowerPositioning followerPositioning;
 
     public float radius = 1f;
