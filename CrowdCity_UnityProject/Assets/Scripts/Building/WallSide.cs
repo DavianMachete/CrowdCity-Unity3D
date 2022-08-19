@@ -14,7 +14,16 @@ public class WallSide : MonoBehaviour
 
     private BoxCollider sideCollider;
 
-    private void Awake()
+    [SerializeField] private bool ignoreX = false;
+    [SerializeField] private bool ignoreY = false;
+    [SerializeField] private bool ignoreZ = false;
+
+    //private void Awake()
+    //{
+    //    FixCollider();
+    //}
+
+    public void FixCollider()
     {
         sideCollider = GetComponent<BoxCollider>();
 
@@ -25,76 +34,76 @@ public class WallSide : MonoBehaviour
         if (wall.BuildingSide == BuildingSide.Ground)
         {
             sideCollider.center =
-                new Vector3(0f,
-                0.125f / height,
-                -0.33f / width);
+                new Vector3(ignoreX ? sideCollider.center.x : 0f,
+                ignoreY ? sideCollider.center.y : (0.125f / height),
+                ignoreZ ? sideCollider.center.z : (-0.33f / width));
 
             sideCollider.size =
-                new Vector3((lenght - 0.3f) / lenght,
-                0.25f / height,
-                0.15f / width);
+                new Vector3(ignoreX ? sideCollider.size.x : ((lenght - 0.3f) / lenght),
+                ignoreY ? sideCollider.size.y : (0.25f / height),
+                ignoreZ ? sideCollider.size.z : (0.15f / width));
         }
         else if (wall.BuildingSide == BuildingSide.Top)
         {
             sideCollider.center =
-                new Vector3(0f,
-                0.125f / height,
-                -0.075f / width);
+                new Vector3(ignoreX ? sideCollider.center.x : 0f,
+                ignoreY ? sideCollider.center.y : (0.125f / height),
+                ignoreZ ? sideCollider.center.z : (-0.075f / width));
 
             sideCollider.size =
-                   new Vector3((lenght - 0.3f) / lenght,
-                   0.25f / height,
-                   0.15f / width);
+                new Vector3(ignoreX ? sideCollider.size.x : ((lenght - 0.3f) / lenght),
+                ignoreY ? sideCollider.size.y : (0.25f / height),
+                ignoreZ ? sideCollider.size.z : (0.15f / width));
         }
         else
         {
             if (name.Contains("Top"))
             {
                 sideCollider.center =
-                    new Vector3(0f,
-                    0.125f / height,
-                    -0.075f / width);
+                    new Vector3(ignoreX ? sideCollider.center.x : 0f,
+                    ignoreY ? sideCollider.center.y : (0.125f / height),
+                    ignoreZ ? sideCollider.center.z : (-0.075f / width));
 
                 sideCollider.size =
-                       new Vector3((lenght - 0.3f) / lenght,
-                       0.25f / height,
-                       0.15f / width);
+                    new Vector3(ignoreX ? sideCollider.size.x : ((lenght - 0.3f) / lenght),
+                    ignoreY ? sideCollider.size.y : (0.25f / height),
+                    ignoreZ ? sideCollider.size.z : (0.15f / width));
             }
             else if (name.Contains("Bottom"))
             {
                 sideCollider.center =
-                    new Vector3(0f,
-                    0.125f / height,
-                    -0.33f / width);
+                    new Vector3(ignoreX ? sideCollider.center.x : 0f,
+                    ignoreY ? sideCollider.center.y : (0.125f / height),
+                    ignoreZ ? sideCollider.center.z : (-0.33f / width));
 
                 sideCollider.size =
-                       new Vector3((lenght - 0.3f) / lenght,
-                       0.25f / height,
-                       0.15f / width);
+                    new Vector3(ignoreX ? sideCollider.size.x : ((lenght - 0.3f) / lenght),
+                    ignoreY ? sideCollider.size.y : (0.25f / height),
+                    ignoreZ ? sideCollider.size.z : (0.15f / width));
             }
             else if (name.Contains("Right"))
             {
                 sideCollider.center =
-                    new Vector3(-0.125f / lenght,
-                    0.125f / height,
-                    -0.075f / width);
+                    new Vector3(ignoreX ? sideCollider.center.x : (-0.125f / lenght),
+                    ignoreY ? sideCollider.center.y : (0.125f / height),
+                    ignoreZ ? sideCollider.center.z : (-0.075f / width));
 
                 sideCollider.size =
-                       new Vector3((lenght - 0.55f) / lenght,
-                       0.25f / height,
-                       0.15f / width);
+                       new Vector3(ignoreX ? sideCollider.size.x : ((lenght - 0.55f) / lenght),
+                       ignoreY ? sideCollider.size.y : (0.25f / height),
+                       ignoreZ ? sideCollider.size.z : (0.15f / width));
             }
             else if (name.Contains("Left"))
             {
                 sideCollider.center =
-                    new Vector3(0.125f / lenght,
-                    0.125f / height,
-                    -0.075f / width);
+                    new Vector3(ignoreX ? sideCollider.center.x : (-.125f / lenght),
+                    ignoreY ? sideCollider.center.y : (0.125f / height),
+                    ignoreZ ? sideCollider.center.z : (-0.075f / width));
 
                 sideCollider.size =
-                       new Vector3((lenght - 0.55f) / lenght,
-                       0.25f / height,
-                       0.15f / width);
+                       new Vector3(ignoreX ? sideCollider.size.x : ((lenght - 0.55f) / lenght),
+                       ignoreY ? sideCollider.size.y : (0.25f / height),
+                       ignoreZ ? sideCollider.size.z : (0.15f / width));
             }
         }
     }

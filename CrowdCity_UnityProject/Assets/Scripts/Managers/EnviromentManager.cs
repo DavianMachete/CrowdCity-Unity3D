@@ -9,6 +9,13 @@ public class EnviromentManager : MonoBehaviour
 
     public Vector2 areaSize = new Vector2(100f, 100f);
 
+    [SerializeField] private Material buildingWhiteMAterial;
+
+
+    private Building[] buildings;
+
+
+
     void Awake()
     {
         instance = this;
@@ -29,4 +36,43 @@ public class EnviromentManager : MonoBehaviour
         Vector3 finalPosition = hit.position;
         return finalPosition;
     }
+
+
+    public void SetBuildingsMaterial(int index)
+    {
+        Material material = null;
+        switch (index)
+        {
+            case 0:
+                material = null;
+                break;
+            case 1:
+                material = buildingWhiteMAterial;
+                break;
+            default:
+                break;
+        }
+        Debug.Log("Start Ienumerator");
+
+        if (buildings == null) GetAllBuildings();
+
+
+        Debug.Log("Building gets");
+
+        for (int i = 0; i < buildings.Length; i++)
+        {
+            buildings[i].SetMaterial(material);
+
+
+            Debug.Log($"{buildings[i].name} material changed");
+        }
+    }
+
+    private void GetAllBuildings()
+    {
+        buildings = FindObjectsOfType<Building>();
+    }
+
+
+    
 }

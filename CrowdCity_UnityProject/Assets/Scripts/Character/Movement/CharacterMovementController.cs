@@ -161,16 +161,23 @@ public class CharacterMovementController : MonoBehaviour
         Quaternion startRot = transform.rotation;
         Quaternion targetRot = Quaternion.LookRotation(wallSide.nextWallSide.transform.forward * -1f, wallSide.nextWallSide.wall.Normal);
 
-        while (t <= dur)
+        if (dur < 0.02f)
         {
-            //Move
-            transform.position = Vector3.Lerp(startPos, wallSidePoint, t / dur);
+            transform.SetPositionAndRotation(wallSidePoint, targetRot);
+        }
+        else
+        {
+            while (t <= dur)
+            {
+                //Move
+                transform.position = Vector3.Lerp(startPos, wallSidePoint, t / dur);
 
-            //Rotate
-            transform.rotation = Quaternion.Slerp(startRot, targetRot, (t / dur) / 2f);
+                //Rotate
+                transform.rotation = Quaternion.Slerp(startRot, targetRot, (t / dur) / 2f);
 
-            t += Time.deltaTime;
-            yield return new WaitForEndOfFrame();
+                t += Time.deltaTime;
+                yield return new WaitForEndOfFrame();
+            }
         }
 
         //second side

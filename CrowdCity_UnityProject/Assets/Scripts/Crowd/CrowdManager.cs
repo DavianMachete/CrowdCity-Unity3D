@@ -108,6 +108,11 @@ public class CrowdManager : MonoBehaviour
         charactersMaxLimit = Mathf.FloorToInt(count);
     }
 
+    public void SetFollowersStartCount(float count)
+    {
+        followersStartCount = Mathf.FloorToInt(count);
+    }
+
     //public void SetSeekingsCountInOneFrame(float count)
     //{
     //    seekingsInOneFrame = Mathf.FloorToInt(count);

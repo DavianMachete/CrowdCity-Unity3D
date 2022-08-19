@@ -27,6 +27,7 @@ public class ObjectInteractionController : MonoBehaviour
     {
         if (!interactable)
             return;
+        //Debug.Log("asdasdfsd");
 
         foreach (OnTagTriggerEnter te in onTagTriggerEnters)
         {

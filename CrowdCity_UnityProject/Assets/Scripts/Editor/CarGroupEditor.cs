@@ -17,6 +17,7 @@ public class CarGroupEditor : Editor
             Debug.Log($"Replace With Prefabs CALLED for {carGroup.name}");
 
             carGroup.ReplaceWithPrefabs();
+            serializedObject.ApplyModifiedProperties();
         }
 
         if (GUILayout.Button("Randomize Materials"))
@@ -24,6 +25,7 @@ public class CarGroupEditor : Editor
             Debug.Log($"Randomize Materials CALLED for {carGroup.name}");
 
             carGroup.RandomizeMaterials();
+            serializedObject.ApplyModifiedProperties();
         }
     }
 }
